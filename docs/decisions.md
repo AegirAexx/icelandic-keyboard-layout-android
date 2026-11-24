@@ -119,5 +119,7 @@ Append-only. Format: ID, date, decision, why, consequences. Supersede rather tha
 - **Consequences:** the release APK grows from 5.8 KB to about 27 KB. Keyboard presence is detected as
   any non-virtual alphabetic keyboard, without `InputDevice.isExternal` (it would hide built-in
   keyboards that also use the selected layout, and the emulator's). Strings exist in English and
-  Icelandic; the Icelandic text needs a native-speaker review. The settings path wording stays
+  Icelandic. The Icelandic text uses the everyday loanword "layout" (layout’ið, layout’i) instead of
+  "útlit", which Icelanders don't use for this; revisit after user testing. The launcher label is "Ð
+  Layout" in every language, because "Icelandic Keyboard Layout" truncates in launchers. The settings path wording stays
   generic until real devices are tested.
