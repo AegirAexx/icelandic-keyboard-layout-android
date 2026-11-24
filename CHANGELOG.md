@@ -15,6 +15,6 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - App icon.
 
 ### Changed
-- The corrected layout declares the locale `is-IS` (AOSP: `is-Latn`), so Android 14+ selects it
-  automatically for Gboard's Icelandic language instead of the broken stock layout.
+- The corrected layout declares the locales `is-IS,is-Latn` (AOSP: `is-Latn`), so Android 14+ selects
+  it automatically for Gboard's Icelandic language instead of the broken stock layout.
 - Setup steps: add Icelandic to the on-screen keyboard's languages first.

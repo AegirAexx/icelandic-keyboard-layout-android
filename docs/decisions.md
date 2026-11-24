@@ -126,19 +126,23 @@ Append-only. Format: ID, date, decision, why, consequences. Supersede rather tha
   settings path wording stays generic until real devices are tested. Light system bar icons are only
   set from API 35 (edge-to-edge, transparent bars).
 
-## D-012 · 24.11.2026 · Declare `keyboardLocale="is-IS"` instead of AOSP's `is-Latn`
+## D-012 · 24.11.2026 · Declare `keyboardLocale="is-IS,is-Latn"` instead of AOSP's `is-Latn`
 
-- **Decision:** our layout's `android:keyboardLocale` is `is-IS`. The KCM and every other attribute
-  except the label stay as in AOSP. The setup steps also tell users to add Icelandic to the on-screen
-  keyboard's languages first.
+- **Decision:** our layout's `android:keyboardLocale` is `is-IS,is-Latn`. The KCM and every other
+  attribute except the label stay as in AOSP. The setup steps also tell users to add Icelandic to the
+  on-screen keyboard's languages first.
 - **Why:** on API 34+ the system auto-selects a layout per keyboard and IME subtype. With identical
-  locales the stock layout wins the tie: third-party providers get priority 0, and the label
-  "Icelandic" sorts before ours. `is-IS` scores an exact country match (3) against stock's `is-Latn`
-  empty-country semi-match (2.5) for Gboard's `is-IS` subtype, so ours is picked with no manual setup.
-  Verified on the API 37 emulator with a clean install and an `is-Latn` control
-  (`research/layout-selection.md`). Gaming the label sort order instead was rejected: it is fragile
-  and would need an odd label.
+  locales the layouts tie: third-party providers get priority 0, and the tie is broken by label in the
+  system language, which the stock "Icelandic" wins in English and Icelandic. `is-IS` scores an exact
+  country match (3) against stock's `is-Latn` empty-country semi-match (2.5) for Gboard's `is-IS`
+  subtype, so ours is picked with no manual setup. Verified on the API 37 emulator with a clean install
+  and an `is-Latn` control (`research/layout-selection.md`). `is-Latn` stays in the list because the
+  scorer takes a layout's best locale: for a bare `is` subtype ours keeps AOSP's score and tie, where
+  `is-IS` alone would score lower and lose even in system languages where ours wins the tie today
+  (found by a blind review). Gaming the label sort order instead was rejected: it is fragile and
+  would need an odd label.
 - **Consequences:** a deliberate deviation from AOSP metadata (justified in `research/kcm-diff.md`).
-  It only helps IME subtypes tagged with country `IS`. A bare `is` subtype still gets the stock layout,
-  and other IMEs' tags are **unverified**. No effect below API 34. Manual selection stays in the
-  instructions as the fallback.
+  Never worse than `is-Latn` alone. It only helps IME subtypes tagged with country `IS`; other IMEs'
+  tags are **unverified**. No effect below API 34. Manual selection stays in the instructions as the
+  fallback. AOSP's own XML never lists several locales; the `,`/`|` list form is documented in the
+  `keyboardLocale` attribute (`core/res/res/values/attrs.xml`) and was verified on the emulator.

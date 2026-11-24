@@ -74,7 +74,7 @@ No other line differs. Behavior outside `LEFT_BRACKET` is identical to AOSP.
 | Attribute | AOSP | Ours | Why |
 |---|---|---|---|
 | `android:label` | "Icelandic" | "Icelandic (corrected Ð)", Icelandic "Íslenskt (leiðrétt Ð)" | Users can tell it apart from the stock entry, which stays in the list. |
-| `android:keyboardLocale` | `is-Latn` | `is-IS` (D-012) | On API 34+, wins automatic selection over the stock layout for IME subtypes tagged `is-IS` (Gboard). With equal locales the stock layout wins the tie. See `layout-selection.md`. |
+| `android:keyboardLocale` | `is-Latn` | `is-IS,is-Latn` (D-012) | On API 34+, `is-IS` wins automatic selection over the stock layout for IME subtypes tagged `is-IS` (Gboard). `is-Latn` keeps AOSP's score for any other Icelandic subtype, so it is never worse than AOSP's value. See `layout-selection.md`. |
 
 The `name` only has to be unique within this app's receiver. The system identifies a layout by package,
 receiver and name together: `KeyboardLayoutDescriptor.format(receiver.packageName, receiver.name, name)`

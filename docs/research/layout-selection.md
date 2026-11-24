@@ -1,8 +1,10 @@
 # Automatic layout selection on Android 14+ (API 34+)
 
 How Android picks a physical keyboard layout when the user hasn't chosen one, and what that means for
-this app. Source read on 24.11.2026 from `refs/heads/main` of `platform/frameworks/base`; emulator
-tests on API 37 the same day.
+this app. Source read on 24.11.2026 from `refs/heads/main` of `platform/frameworks/base`. As served
+that day, `main` was at commit `1cdfff555f4a21f71ccc978290e2e212e2f8b168` (committed 26.03.2025), so the
+quotes can be checked against that commit even after `main` moves. Emulator tests on API 37 the same
+day.
 
 Sources:
 - `KeyboardLayoutManager.java`:
@@ -19,8 +21,8 @@ Sources:
    picked under "English (US)" does not apply when the IME is on an Icelandic subtype.
 2. **With an Icelandic IME subtype, automatic selection picks the stock (broken) layout over ours**
    (verified, source and emulator). Users must select ours by hand under every language they use.
-3. **Changing our `keyboardLocale` from `is-Latn` to `is-IS` makes ours win** for Gboard's `is-IS`
-   subtype (verified on the emulator, clean install, with a control). Applied in D-012.
+3. **Adding `is-IS` to our `keyboardLocale` makes ours win** for Gboard's `is-IS` subtype (verified on
+   the emulator, clean install, with a control). Applied in D-012 as `is-IS,is-Latn`.
 4. **Gboard switches its subtype to match the focused app's locale** (verified on the emulator). This
    explains the earlier per-app locale finding in `testing.md`.
 5. **The auto-selection cache survives an app update** (verified, source and emulator). It is cleared
@@ -110,8 +112,12 @@ Priority is only honored for system apps. Third-party providers get 0:
 
 AOSP's `InputDeviceReceiver` sets no `android:priority` in its intent filter, so the stock layouts
 also have priority 0. Both Icelandic layouts are `qwerty`. The tie is broken by label, resolved in the
-system language: "Icelandic" sorts before "Icelandic (corrected Ð)", and AOSP's Icelandic label
-"Íslenskt" sorts before "Íslenskt (leiðrétt Ð)". **The stock layout wins every tie.**
+system language. With an English or Icelandic system language the stock layout wins: "Icelandic" sorts
+before "Icelandic (corrected Ð)", and AOSP's Icelandic label "Íslenskt" sorts before "Íslenskt
+(leiðrétt Ð)". **In other system languages ours can win the tie.** This app only has English and
+Icelandic labels, so elsewhere it shows "Icelandic (corrected Ð)" against AOSP's translation. For
+example, in German "Icelandic …" sorts before "Isländisch" (`c` < `s`). Verified from the sort code
+and the AOSP translations (blind review, 24.11.2026); not tested on a device.
 
 ## Scores for Gboard's Icelandic subtype
 
@@ -122,16 +128,20 @@ keyboard hint (from `ime list -a`, emulator). The IME step therefore matches aga
 |---|---|---|---|---|---|
 | Stock (AOSP) | `is-Latn` | 1 | 0.5 (empty) | 1 (both empty) | 2.5 |
 | Ours today | `is-Latn` | 1 | 0.5 | 1 | 2.5, tie, stock wins on label |
-| Ours with `is-IS` | `is-IS` | 1 | 1 | 1 | **3, ours wins** |
+| Ours with `is-IS` only | `is-IS` | 1 | 1 | 1 | **3, ours wins** |
+| Ours with `is-IS,is-Latn` (D-012) | best of both | | | | **3, ours wins** |
 
-For a subtype tagged only `is` (no country), `is-IS` would score 2 against stock's 3, so stock wins.
-The behavior would then be the same as today. Which tags other IMEs (Samsung Keyboard, SwiftKey, FUTO)
+For a subtype tagged only `is` (no country), `is-IS` alone would score 2 against stock's 3, so stock
+would win even in the system languages where ours used to win the tie: a regression. Keeping `is-Latn`
+next to it avoids that: the scorer keeps a layout's best score across its locales, so ours scores 3 via
+`is-Latn` and the tie is broken by label as before. `is-IS,is-Latn` is therefore never worse than
+`is-Latn` alone. Which tags other IMEs (Samsung Keyboard, SwiftKey, FUTO)
 use is **unverified**.
 
 The hardware step runs before the IME step: a keyboard that reports its own language tag
 (`InputDevice.getKeyboardLanguageTag()`, from the HID country code or the IDC file) is matched on
 that tag first. Whether real USB/Bluetooth keyboards sold in Iceland report one is **unverified**. The
-HID country code list has no Iceland entry as far as I know (**unverified**), and most keyboards report
+HID country code list may have no Iceland entry (**unverified**), and most keyboards report
 0 (not supported).
 
 ## Emulator results (API 37, 24.11.2026)
@@ -144,6 +154,7 @@ Physical keyboard → device shows per language when the user has chosen nothing
 | None (stock only) | Automatic: Icelandic |
 | Ours, `keyboardLocale="is-Latn"` (current) | Automatic: Icelandic (stock wins) |
 | Ours, `keyboardLocale="is-IS"` (scratch build) | **Automatic: Icelandic (corrected Ð)** |
+| Ours, `keyboardLocale="is-IS,is-Latn"` (D-012) | **Automatic: Icelandic (corrected Ð)** |
 
 Under English (US) all three show "Automatic: English (US)".
 
@@ -190,9 +201,10 @@ our layout (`removeUninstalledKeyboardLayouts`).
 - **User instructions:** selecting the layout under each language stays in the setup steps as the
   fallback for IMEs and Android versions where auto-selection doesn't pick ours. The steps now also
   tell users to add Icelandic to the on-screen keyboard's languages first, so it appears in the list.
-- **`keyboardLocale="is-IS"` (D-012, applied):** for Gboard users with Icelandic enabled on API 34+,
-  the fix applies with no manual selection. Trade-offs: it deviates from AOSP's `is-Latn`; it only
-  helps subtypes tagged with country `IS`; and it changes nothing below API 34, where
-  `keyboardLocale` is ignored. Existing installs only pick it up when the auto-selection cache is
-  rebuilt (see above); a first install from v0.1.0 onward has no such problem, since nothing was
-  released before.
+- **`keyboardLocale="is-IS,is-Latn"` (D-012, applied):** for Gboard users with Icelandic enabled on
+  API 34+, the fix applies with no manual selection. Trade-offs: it deviates from AOSP's `is-Latn`; it
+  only helps subtypes tagged with country `IS`; and it changes nothing below API 34, where
+  `keyboardLocale` is ignored.
+- **Cache caveat for future releases:** no version has been released yet (v0.1.0 is unreleased,
+  CHANGELOG `[Unreleased]`), so no install has a stale cache entry. A later release that changes the
+  locales would only take effect on existing installs once the cache is rebuilt (see above).
