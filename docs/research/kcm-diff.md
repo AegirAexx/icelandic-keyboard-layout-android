@@ -1,8 +1,8 @@
 # KCM diff against upstream
 
-**Status:** verified 24.11.2026. The project's KCM was generated from the upstream file by a script
-that asserts each replaced block occurs exactly once. The packaged APK resource is byte-identical to
-`app/src/main/res/raw/keyboard_layout_icelandic.kcm` (checked with `cmp` on the release APK).
+**Status:** verified 24.11.2026 by `diff -u` against the upstream file. The packaged APK resource is
+byte-identical to `app/src/main/res/raw/keyboard_layout_icelandic.kcm` (checked with `cmp` on the release
+APK). Both files are ASCII only: characters are written as `\uXXXX` escapes.
 
 ## Upstream
 
@@ -12,10 +12,16 @@ that asserts each replaced block occurs exactly once. The packaged APK resource 
   (`?format=TEXT`, base64-decoded)
 - sha256 `09314f2c7db3900ddb36f90164eba10d185678f9f73b41f2bb81b53bdda3c8d9`, 362 lines, LF, ASCII only.
 
-To re-check: fetch the file again and run `diff -u upstream.kcm app/src/main/res/raw/keyboard_layout_icelandic.kcm`.
-The output must be exactly the diff below.
+To re-check, fetch the file again and compare. The output must be exactly the diff below:
 
-## Diff (verbatim `diff -u`, file names shortened)
+```sh
+curl -sSL 'https://android.googlesource.com/platform/frameworks/base/+/refs/heads/main/packages/InputDevices/res/raw/keyboard_layout_icelandic.kcm?format=TEXT' \
+  | base64 -d > upstream.kcm
+diff -u --label upstream/keyboard_layout_icelandic.kcm --label app/src/main/res/raw/keyboard_layout_icelandic.kcm \
+  upstream.kcm app/src/main/res/raw/keyboard_layout_icelandic.kcm
+```
+
+## Diff (verbatim `diff -u` output)
 
 ```diff
 --- upstream/keyboard_layout_icelandic.kcm
@@ -35,14 +41,14 @@ The output must be exactly the diff below.
  }
  
  key LEFT_BRACKET {
--    label:                              'Đ'
--    base:                               'đ'
--    shift, capslock:                    'Đ'
--    shift+capslock:                     'đ'
-+    label:                              'Ð'
-+    base:                               'ð'
-+    shift, capslock:                    'Ð'
-+    shift+capslock:                     'ð'
+-    label:                              '\u0110'
+-    base:                               '\u0111'
+-    shift, capslock:                    '\u0110'
+-    shift+capslock:                     '\u0111'
++    label:                              '\u00d0'
++    base:                               '\u00f0'
++    shift, capslock:                    '\u00d0'
++    shift+capslock:                     '\u00f0'
  }
  
  key RIGHT_BRACKET {
@@ -53,10 +59,10 @@ The output must be exactly the diff below.
 | Line(s) | Change | Why |
 |---|---|---|
 | 18 to 21 (added) | Comment: modification notice | Apache-2.0 §4(b): "You must cause any modified files to carry prominent notices stating that You changed the files." Comment only; the KCM parser skips `#` lines. The original copyright header is kept unchanged. |
-| `label` | `Đ` → `Ð` | Key cap label shown in the settings preview: Ð (eth), not Đ. |
-| `base` | `đ` → `ð` | Unshifted key types ð. This is the visible bug. |
-| `shift, capslock` | `Đ` → `Ð` | Shift or Caps Lock types Ð. |
-| `shift+capslock` | `đ` → `ð` | Shift with Caps Lock on types ð, mirroring upstream's lowercase-on-both rule. |
+| `label` | `\u0110` → `\u00d0` | Key cap label in the settings preview: Ð (eth) instead of Đ (D with stroke). |
+| `base` | `\u0111` → `\u00f0` | Unshifted key types ð instead of đ. This is the visible bug. |
+| `shift, capslock` | `\u0110` → `\u00d0` | Shift or Caps Lock types Ð instead of Đ. |
+| `shift+capslock` | `\u0111` → `\u00f0` | Shift with Caps Lock on types ð, mirroring upstream's lowercase-on-both rule. |
 
 No other line differs. Behavior outside `LEFT_BRACKET` is identical to AOSP.
 

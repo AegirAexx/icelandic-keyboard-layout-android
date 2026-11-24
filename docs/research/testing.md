@@ -28,6 +28,17 @@ Not yet tested: real devices, Samsung One UI, Android versions below 17 (minSdk 
   Behavior is correct (those attributes are only read on API 34+). Why aapt2 picks v22 rather than v34 is
   **unverified**.
 
+## Open questions
+
+- **Automatic selection on Android 14+ (API 34+).** Our layout and the stock one both declare
+  `keyboardLocale="is-Latn"` and `keyboardLayoutType="qwerty"`. When the IME language is Icelandic,
+  which one does the system pick automatically, if either? This decides whether users must select the
+  layout by hand, so it shapes the user instructions. **Unverified**: the emulator test used an English
+  (US) IME, where the default was "Automatic: English (US)". Next: read `KeyboardLayoutManager`'s
+  selection logic, then test with an Icelandic IME language. If the stock layout wins, consider whether
+  a different `keyboardLayoutType` or locale is justified (a deliberate deviation from AOSP that needs a
+  decision).
+
 ## Procedure (emulator)
 
 `adb shell input keyevent` does **not** test this: it injects through the virtual keyboard device, which

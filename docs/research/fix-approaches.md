@@ -9,12 +9,12 @@ receivers for `android.hardware.input.action.QUERY_KEYBOARD_LAYOUTS` and reads t
 `android.hardware.input.metadata.KEYBOARD_LAYOUTS` metadata. That metadata points to an XML resource
 listing `.kcm` files. AOSP's own layouts ship this way (the `InputDevices` package).
 
-Shape (built in `app/`; verified on an API 37 emulator, see `testing.md`):
+Shape (as built in `app/src/main/AndroidManifest.xml`; verified on an API 37 emulator, see `testing.md`):
 
 ```xml
 <!-- AndroidManifest.xml -->
 <receiver android:name=".LayoutsReceiver" android:exported="true"
-          android:label="@string/app_name">
+          android:label="@string/keyboard_layouts_label">
     <intent-filter>
         <action android:name="android.hardware.input.action.QUERY_KEYBOARD_LAYOUTS" />
     </intent-filter>
