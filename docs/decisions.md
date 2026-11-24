@@ -49,3 +49,13 @@ Append-only. Format: ID, date, decision, why, consequences. Supersede rather tha
   most devices never receive that update.
 - **Consequences:** store metadata goes in `fastlane/metadata/android/{en-US,is-IS}/`. The application ID
   is still open (see `research/publishing.md`).
+
+## D-006 · 24.11.2026 · Repository moved to the personal GitHub account
+
+- **Decision:** the repository is now `https://github.com/AegirAexx/icelandic-keyboard-layout-android`
+  (ownership transferred from the work account `ORI-Aegir`). Supersedes the URL in D-005; the rest of
+  D-005 stands.
+- **Why:** the app is a personal project and should not depend on a work account.
+- **Consequences:** the application ID candidate changes from `io.github.ori_aegir.icelandickeyboard` to
+  `io.github.aegiraexx.icelandickeyboard` (still undecided, see `research/publishing.md`). The first two
+  commits carry the work author email; history was not rewritten.

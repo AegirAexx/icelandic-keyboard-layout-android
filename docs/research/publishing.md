@@ -34,7 +34,13 @@ Record findings here with dates.
 To decide before the first build. The ID can't change after publishing. It should be a reverse-DNS name
 the author controls, or e.g. `io.github.<username>.<app>` if publishing from GitHub.
 
-With the GitHub account `ORI-Aegir` (D-005), the GitHub-derived candidate is
-`io.github.ori_aegir.icelandickeyboard`. Hyphens aren't allowed in ID segments, so `-` becomes `_`
-(**unverified**: based on the Android `applicationId` naming rules, not checked this session). The ID
-would be tied to that account permanently, so confirm it is the account that should own the app.
+With the GitHub account `AegirAexx` (D-006), the GitHub-derived candidate is
+`io.github.aegiraexx.icelandickeyboard`. GitHub usernames are case-insensitive, and application IDs
+are lowercase by convention, so `AegirAexx` becomes `aegiraexx` (**unverified**: based on the Android
+`applicationId` naming rules, not checked this session). Still undecided; no build exists yet.
+
+An `io.github.*` ID is tied to that GitHub account permanently. The earlier candidate
+`io.github.ori_aegir.icelandickeyboard` (work account `ORI-Aegir`) was dropped when the repository moved
+to the personal account on 24.11.2026. That move is the argument for the alternative: a reverse-DNS
+name under a domain the author owns, which doesn't depend on any GitHub account. Decide before the
+first build.
