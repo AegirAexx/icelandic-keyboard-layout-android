@@ -7,7 +7,7 @@
     <string name="intro">Aðeins fyrir USB- og Bluetooth-lyklaborð. Á þeim skrifar innbyggða íslenska layout’ið í Android đ (D með þverstriki) í stað ð (eðs) á takkanum hægra megin við P. Þetta forrit bætir við leiðréttu layout’i.\n\nSkjályklaborð eins og Gboard, Samsung Keyboard og FUTO skrifa nú þegar rétt ð. Forritið breytir þeim ekki.</string>
 
     <string name="setup_heading">Uppsetning</string>
-    <string name="setup_steps">1. Tengdu lyklaborðið.\n2. Ýttu á „Opna lyklaborðsstillingar“ hér fyrir neðan.\n3. Veldu lyklaborðið. Í Android 14 og nýrri skaltu líka velja tungumál.\n4. Veldu „%1$s“. Ef fleiri en eitt tungumál eru í boði skaltu velja það undir hverju þeirra.\n5. Komdu aftur hingað og ýttu á Ð-takkann til að prófa.</string>
+    <string name="setup_steps">1. Tengdu lyklaborðið.\n2. Ef þú skrifar á íslensku skaltu fyrst bæta íslensku við tungumálin í skjályklaborðinu (til dæmis í stillingum Gboard). Annars birtist hún ekki í listanum í skrefi 4.\n3. Ýttu á „Opna lyklaborðsstillingar“ hér fyrir neðan.\n4. Veldu lyklaborðið. Í Android 14 og nýrri skaltu líka velja tungumál.\n5. Veldu „%1$s“. Ef fleiri en eitt tungumál eru í boði skaltu velja það undir hverju þeirra.\n6. Komdu aftur hingað og ýttu á Ð-takkann til að prófa.</string>
     <string name="open_settings">Opna lyklaborðsstillingar</string>
     <string name="setup_note">Valmyndirnar eru mismunandi eftir Android-útgáfum og framleiðendum. Ef hnappurinn opnar annan skjá skaltu leita að stillingum fyrir vélbúnaðarlyklaborð undir lyklaborðs- eða tungumálastillingum.</string>
 

@@ -125,3 +125,20 @@ Append-only. Format: ID, date, decision, why, consequences. Supersede rather tha
   "Ð Layout" in every language, because "Icelandic Keyboard Layout" truncates in launchers. The
   settings path wording stays generic until real devices are tested. Light system bar icons are only
   set from API 35 (edge-to-edge, transparent bars).
+
+## D-012 · 24.11.2026 · Declare `keyboardLocale="is-IS"` instead of AOSP's `is-Latn`
+
+- **Decision:** our layout's `android:keyboardLocale` is `is-IS`. The KCM and every other attribute
+  except the label stay as in AOSP. The setup steps also tell users to add Icelandic to the on-screen
+  keyboard's languages first.
+- **Why:** on API 34+ the system auto-selects a layout per keyboard and IME subtype. With identical
+  locales the stock layout wins the tie: third-party providers get priority 0, and the label
+  "Icelandic" sorts before ours. `is-IS` scores an exact country match (3) against stock's `is-Latn`
+  empty-country semi-match (2.5) for Gboard's `is-IS` subtype, so ours is picked with no manual setup.
+  Verified on the API 37 emulator with a clean install and an `is-Latn` control
+  (`research/layout-selection.md`). Gaming the label sort order instead was rejected: it is fragile
+  and would need an odd label.
+- **Consequences:** a deliberate deviation from AOSP metadata (justified in `research/kcm-diff.md`).
+  It only helps IME subtypes tagged with country `IS`. A bare `is` subtype still gets the stock layout,
+  and other IMEs' tags are **unverified**. No effect below API 34. Manual selection stays in the
+  instructions as the fallback.

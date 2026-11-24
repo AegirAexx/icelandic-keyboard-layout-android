@@ -20,8 +20,7 @@ Sources:
 2. **With an Icelandic IME subtype, automatic selection picks the stock (broken) layout over ours**
    (verified, source and emulator). Users must select ours by hand under every language they use.
 3. **Changing our `keyboardLocale` from `is-Latn` to `is-IS` makes ours win** for Gboard's `is-IS`
-   subtype (verified on the emulator, clean install, with a control). Not applied: it deviates from
-   AOSP's metadata and needs a decision.
+   subtype (verified on the emulator, clean install, with a control). Applied in D-012.
 4. **Gboard switches its subtype to match the focused app's locale** (verified on the emulator). This
    explains the earlier per-app locale finding in `testing.md`.
 5. **The auto-selection cache survives an app update** (verified, source and emulator). It is cleared
@@ -188,10 +187,12 @@ our layout (`removeUninstalledKeyboardLayouts`).
 
 ## Implications
 
-- **User instructions:** step 4 ("select it under each language") is required, not optional. Add:
-  if you type in Icelandic, add Icelandic to the on-screen keyboard's languages first, so it appears
-  in the list.
-- **Possible change (needs a decision):** `keyboardLocale="is-IS"`. For Gboard users with Icelandic
-  enabled on API 34+, the fix would then apply with no manual selection. Trade-offs: it deviates from
-  AOSP's `is-Latn`; it only helps subtypes tagged with country `IS`; and it changes nothing below
-  API 34, where `keyboardLocale` is ignored.
+- **User instructions:** selecting the layout under each language stays in the setup steps as the
+  fallback for IMEs and Android versions where auto-selection doesn't pick ours. The steps now also
+  tell users to add Icelandic to the on-screen keyboard's languages first, so it appears in the list.
+- **`keyboardLocale="is-IS"` (D-012, applied):** for Gboard users with Icelandic enabled on API 34+,
+  the fix applies with no manual selection. Trade-offs: it deviates from AOSP's `is-Latn`; it only
+  helps subtypes tagged with country `IS`; and it changes nothing below API 34, where
+  `keyboardLocale` is ignored. Existing installs only pick it up when the auto-selection cache is
+  rebuilt (see above); a first install from v0.1.0 onward has no such problem, since nothing was
+  released before.

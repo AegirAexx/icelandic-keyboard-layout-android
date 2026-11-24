@@ -9,6 +9,7 @@ How the layout was verified, and how to repeat it. Results are listed per device
 | 24.11.2026 | Emulator, `google_apis_playstore` x86_64 image | 17 (API 37) | debug, v0.1.0 | **Pass.** Layout listed and selectable; `[` / `{` type U+00F0 / U+00D0. Stock "Icelandic" types U+0111 / U+0110 (bug reproduced). |
 | 24.11.2026 | Same emulator | 17 (API 37) | debug, v0.1.0 + instructions screen | **Pass.** In-app key test: corrected layout reports U+00F0 / U+00D0; stock layout reports U+0111 / U+0110; a non-Icelandic layout reports U+005B. `adb shell input keyevent KEYCODE_LEFT_BRACKET` (virtual device) is ignored. Button opens `Settings$PhysicalKeyboardActivity`. Insets correct under edge-to-edge; EN/IS and light/dark checked by screenshot; adaptive icon renders in the launcher. |
 | 24.11.2026 | Same emulator, Gboard with English (US) + Íslenska (Ísland) | 17 (API 37) | debug, v0.1.0 | **Pass** with the corrected layout selected under both languages (key test U+00F0 with either subtype). Auto-selection under Íslenska picks the stock layout; see `layout-selection.md`. |
+| 24.11.2026 | Same emulator, Gboard with English (US) + Íslenska (Ísland) | 17 (API 37) | debug, v0.1.0 + `keyboardLocale="is-IS"` (D-012) | **Pass.** Clean install, no manual selection: AT Translated Set 2 keyboard shows "Automatic: Icelandic (corrected Ð)" under Íslenska and "Automatic: English (US)" under English (US). qwerty2 stays "Automatic: English (US)" under both (hardware language tag, see `layout-selection.md`). Six setup steps render correctly. |
 
 Not yet tested: real devices, Samsung One UI, Android versions below 17 (minSdk is 16, D-010).
 
@@ -43,8 +44,8 @@ Not yet tested: real devices, Samsung One UI, Android versions below 17 (minSdk 
 - **Automatic selection on Android 14+ (API 34+).** *Answered 24.11.2026, see `layout-selection.md`.*
   The choice is per keyboard and per IME subtype. Under an Icelandic subtype, auto-selection picks the
   stock layout over ours (tie, broken by label), so users must select ours by hand under each
-  language. `keyboardLocale="is-IS"` would make ours win for Gboard's `is-IS` subtype (verified on the
-  emulator); that is pending a decision.
+  language. `keyboardLocale="is-IS"` makes ours win for Gboard's `is-IS` subtype (verified on the
+  emulator; applied in D-012).
 
 ## Procedure (emulator)
 
