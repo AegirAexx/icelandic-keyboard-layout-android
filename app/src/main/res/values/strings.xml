@@ -10,7 +10,7 @@
 
     <string name="setup_heading">Set up</string>
     <!-- %1$s: the layout name (keyboard_layout_icelandic). -->
-    <string name="setup_steps">1. Connect your keyboard.\n2. Tap “Open keyboard settings” below.\n3. Choose your keyboard. On Android 14 and later, also choose a language.\n4. Select “%1$s”.\n5. Come back here and press the Ð key to check.</string>
+    <string name="setup_steps">1. Connect your keyboard.\n2. Tap “Open keyboard settings” below.\n3. Choose your keyboard. On Android 14 and later, also choose a language.\n4. Select “%1$s”. If more than one language is listed, select it under each one.\n5. Come back here and press the Ð key to check.</string>
     <string name="open_settings">Open keyboard settings</string>
     <string name="setup_note">The menus differ between Android versions and manufacturers. If the button opens a different screen, look for “Physical keyboard” in the keyboard or language settings.</string>
 

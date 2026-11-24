@@ -30,7 +30,10 @@ class MainActivity : Activity(), InputManager.InputDeviceListener {
     private lateinit var status: TextView
     private lateinit var inputManager: InputManager
 
-    /** Result of the last key test, or null if no key has been pressed yet. */
+    /**
+     * Result of the last key test, or null if no key has been pressed since the screen was last
+     * shown. Cleared on resume, because the user may have changed the layout in the settings.
+     */
     private var result: CharSequence? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +52,7 @@ class MainActivity : Activity(), InputManager.InputDeviceListener {
     override fun onResume() {
         super.onResume()
         inputManager.registerInputDeviceListener(this, null)
+        result = null
         updateStatus()
     }
 
@@ -58,7 +62,11 @@ class MainActivity : Activity(), InputManager.InputDeviceListener {
     }
 
     override fun onInputDeviceAdded(deviceId: Int) = updateStatus()
-    override fun onInputDeviceRemoved(deviceId: Int) = updateStatus()
+    override fun onInputDeviceRemoved(deviceId: Int) {
+        result = null
+        updateStatus()
+    }
+
     override fun onInputDeviceChanged(deviceId: Int) = updateStatus()
 
     override fun dispatchKeyEvent(event: KeyEvent): Boolean {
@@ -73,6 +81,7 @@ class MainActivity : Activity(), InputManager.InputDeviceListener {
     }
 
     private fun describe(event: KeyEvent): CharSequence {
+        // Ctrl, Alt and the like match no behavior for this key in the KCM, so they give 0.
         val c = event.getUnicodeChar(event.metaState)
         if (c == 0 || c and KeyCharacterMap.COMBINING_ACCENT != 0) {
             return getString(R.string.test_modifiers)
