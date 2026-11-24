@@ -7,6 +7,7 @@ How the layout was verified, and how to repeat it. Results are listed per device
 | Date | Device | Android | Build | Result |
 |---|---|---|---|---|
 | 24.11.2026 | Emulator, `google_apis_playstore` x86_64 image | 17 (API 37) | debug, v0.1.0 | **Pass.** Layout listed and selectable; `[` / `{` type U+00F0 / U+00D0. Stock "Icelandic" types U+0111 / U+0110 (bug reproduced). |
+| 24.11.2026 | Same emulator | 17 (API 37) | debug, v0.1.0 + instructions screen | **Pass.** In-app key test: corrected layout reports U+00F0 / U+00D0; stock layout reports U+0111 / U+0110; a non-Icelandic layout reports U+005B. `adb shell input keyevent KEYCODE_LEFT_BRACKET` (virtual device) is ignored. Button opens `Settings$PhysicalKeyboardActivity`. Insets correct under edge-to-edge; EN/IS and light/dark checked by screenshot; adaptive icon renders in the launcher. |
 
 Not yet tested: real devices, Samsung One UI, Android versions below 17 (minSdk is 16, D-010).
 
@@ -27,6 +28,17 @@ Not yet tested: real devices, Samsung One UI, Android versions below 17 (minSdk 
   `xml-v22`, and a base copy without `keyboardLocale` / `keyboardLayoutType` for older API levels.
   Behavior is correct (those attributes are only read on API 34+). Why aapt2 picks v22 rather than v34 is
   **unverified**.
+
+- **Per-app locale changes which layout applies (API 37, 24.11.2026).** With the corrected layout
+  selected for qwerty2 under the "English (US)" language, the in-app test passed while the app followed
+  the system locale (en-US). After `cmd locale set-app-locales <app> --locales is-IS`, the same key
+  typed `[` (U+005B, a non-Icelandic layout) and Settings still showed the corrected layout selected.
+  Resetting the app locale to en-US restored U+00F0. Reinstalling the APK did not matter. `dumpsys
+  input_method` showed a different `mCurrentSubtype` per app locale. **Unverified mechanism**: the
+  likely cause is that on API 34+ the layout is chosen per IME language, and the active IME subtype
+  follows the focused app's locale, so an app in Icelandic uses whatever is selected (or automatic)
+  for an Icelandic IME language. If so, users with Icelandic apps or system language must select the
+  layout under that language too. Ties into the open question below.
 
 ## Open questions
 
