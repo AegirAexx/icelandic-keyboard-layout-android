@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Platform themes only (no AndroidX). DeviceDefault is Holo below API 21, Material from 21. -->
+    <style name="AppTheme.Base" parent="android:Theme.DeviceDefault.Light">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme" parent="AppTheme.Base" />
+
+    <style name="Title">
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Heading">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginTop">24dp</item>
+    </style>
+
+    <style name="Body">
+        <item name="android:textAppearance">?android:attr/textAppearance</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:lineSpacingMultiplier">1.2</item>
+    </style>
+</resources>

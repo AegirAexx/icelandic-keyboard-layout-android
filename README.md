@@ -38,7 +38,10 @@ _Coming soon._ Planned channels: GitHub Releases (APK), F-Droid, and possibly Go
 
 ## Usage
 
-_Coming soon._ Step-by-step instructions per Android version and manufacturer will go here.
+Open the app. It explains the setup, opens the physical keyboard settings, and has a key test: press
+the key right of `P` and it shows whether it types `ð` (fixed) or `đ` (stock layout).
+
+Step-by-step instructions per Android version and manufacturer will go here.
 
 ## Building from source
 

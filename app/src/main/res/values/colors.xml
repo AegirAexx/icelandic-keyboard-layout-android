@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        Adaptive icon background (Icelandic flag blue). The icon vectors use literal colors instead
+        of resources, because AGP rasterizes them to PNGs for API < 21 and cannot resolve references.
+    -->
+    <color name="icon_background">#02529C</color>
+</resources>

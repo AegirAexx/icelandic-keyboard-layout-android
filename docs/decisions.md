@@ -104,3 +104,24 @@ Append-only. Format: ID, date, decision, why, consequences. Supersede rather tha
 - **Consequences:** `keyboardLocale` / `keyboardLayoutType` are API 34+ and ignored on older versions
   (lint suppressed with `tools:targetApi`). Behavior below API 37 is **untested**. If a future dependency
   or AGP release needs a higher floor, raise it in a new decision.
+
+## D-011 · 24.11.2026 · Launcher activity with instructions and a key test
+
+- **Decision:** add one launcher activity (`MainActivity`, plain `android.app.Activity`, no AndroidX,
+  no permissions) that states the app is for USB/Bluetooth keyboards only, lists the setup steps, opens
+  the physical keyboard settings, and tests the key right of P. Add an adaptive launcher icon (Ð on
+  Icelandic flag blue, with a monochrome layer) and a vector fallback that AGP rasterizes for API < 21.
+- **Why:** the target users are not developers (CONTEXT.md), and an app with no activity gives them no
+  way to find instructions or confirm the fix. Android 10+ shows a synthetic launcher icon for apps
+  without a launcher activity, but exempts apps that request no permissions, which is this app, so it
+  would be invisible in the launcher. Play's minimum-functionality policy may also reject a UI-less app
+  (both **unverified**). The key test reads `KeyEvent.getUnicodeChar()` from non-virtual devices only,
+  with no text field, so an on-screen keyboard cannot produce a false pass.
+- **Consequences:** the release APK grows from 5.8 KB to about 27 KB. Keyboard presence is detected as
+  any non-virtual alphabetic keyboard, without `InputDevice.isExternal` (it would hide built-in
+  keyboards that also use the selected layout, and the emulator's). Strings exist in English and
+  Icelandic. The Icelandic text uses the everyday loanword "layout" (layout’ið, layout’i) instead of
+  "útlit", which Icelanders don't use for this; revisit after user testing. The launcher label is
+  "Ð Layout" in every language, because "Icelandic Keyboard Layout" truncates in launchers. The
+  settings path wording stays generic until real devices are tested. Light system bar icons are only
+  set from API 35 (edge-to-edge, transparent bars).

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        Edge-to-edge (targetSdk 35+ on API 35+) makes the system bars transparent, so their icons must
+        contrast with the window background. Only set here: below API 35 the bars may be opaque, and
+        dark icons on a dark bar would be unreadable.
+    -->
+    <style name="AppTheme" parent="android:Theme.DeviceDefault.DayNight">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowLightStatusBar">?android:attr/isLightTheme</item>
+        <item name="android:windowLightNavigationBar">?android:attr/isLightTheme</item>
+    </style>
+</resources>
