@@ -1,0 +1,11 @@
+Icelandic Keyboard Layout Fix for Android
+Copyright 2026 Ægir Tómasson
+
+This product includes software developed at
+The Android Open Source Project (https://source.android.com/).
+
+The Icelandic key character map (.kcm) shipped by this product is derived from
+frameworks/base/packages/InputDevices/res/raw/keyboard_layout_icelandic.kcm,
+Copyright (C) 2012 The Android Open Source Project, licensed under the
+Apache License, Version 2.0. It has been modified to map the Icelandic eth
+(U+00D0 / U+00F0) in place of D with stroke (U+0110 / U+0111).

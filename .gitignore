@@ -1,0 +1,42 @@
+# --- Project ---
+# Volatile, per-machine session state for agents. Intentionally untracked (see docs/decisions.md D-004).
+/HANDOFF.md
+
+# --- Gradle ---
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+local.properties
+
+# --- Android Studio / IntelliJ ---
+.idea/
+*.iml
+*.iws
+*.ipr
+captures/
+.externalNativeBuild/
+.cxx/
+.navigation/
+
+# --- Build outputs ---
+*.apk
+*.aab
+*.ap_
+*.dex
+output-metadata.json
+release/
+
+# --- Signing (never commit) ---
+*.jks
+*.keystore
+keystore.properties
+signing.properties
+
+# --- Logs / OS ---
+*.log
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Claude Code local settings ---
+.claude/settings.local.json
