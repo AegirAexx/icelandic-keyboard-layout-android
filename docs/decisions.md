@@ -69,3 +69,13 @@ Append-only. Format: ID, date, decision, why, consequences. Supersede rather tha
   describes one machine misleads the agent on the other.
 - **Consequences:** builds go through the Gradle wrapper; `gradlew` must be committed as executable;
   machine paths stay in the gitignored `local.properties`. Builds on D-004: `HANDOFF.md` is per-machine.
+
+## D-008 · 24.11.2026 · Application ID `io.github.aegiraexx.icelandickeyboard`
+
+- **Decision:** the application ID (and Kotlin namespace) is `io.github.aegiraexx.icelandickeyboard`.
+- **Why:** it is derived from the personal GitHub account that hosts the repo (D-006), costs nothing,
+  and doesn't expose or depend on a privately held domain. Chosen by the user over a reverse-DNS name
+  under an owned domain.
+- **Consequences:** the ID can never change after publishing (Play treats a new ID as a new app; see
+  `research/publishing.md`). It is tied to the GitHub username `AegirAexx`; renaming that account would
+  leave the ID pointing at a name the author no longer holds, so don't rename it.

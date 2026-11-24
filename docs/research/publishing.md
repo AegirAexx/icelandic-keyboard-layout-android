@@ -31,16 +31,22 @@ Record findings here with dates.
 
 ## Application ID
 
-To decide before the first build. The ID can't change after publishing. It should be a reverse-DNS name
-the author controls, or e.g. `io.github.<username>.<app>` if publishing from GitHub.
+**Decided (D-008, 24.11.2026):** `io.github.aegiraexx.icelandickeyboard`.
 
-With the GitHub account `AegirAexx` (D-006), the GitHub-derived candidate is
-`io.github.aegiraexx.icelandickeyboard`. GitHub usernames are case-insensitive, and application IDs
-are lowercase by convention, so `AegirAexx` becomes `aegiraexx` (**unverified**: based on the Android
-`applicationId` naming rules, not checked this session). Still undecided; no build exists yet.
+Naming rules, **verified** against https://developer.android.com/build/configure-app-module
+(read 24.11.2026), quoted verbatim:
 
-An `io.github.*` ID is tied to that GitHub account permanently. The earlier candidate
-`io.github.ori_aegir.icelandickeyboard` (work account `ORI-Aegir`) was dropped when the repository moved
-to the personal account on 24.11.2026. That move is the argument for the alternative: a reverse-DNS
-name under a domain the author owns, which doesn't depend on any GitHub account. Decide before the
-first build.
+> - It must have at least two segments (one or more dots).
+> - Each segment must start with a letter.
+> - All characters must be alphanumeric or an underscore \[a-zA-Z0-9_\].
+
+> Once you publish your app, you should never change the application ID. If you change the
+> application ID, Google Play Store treats the upload as a completely different app.
+
+The chosen ID satisfies these rules: three segments after `io`, each starts with a letter, only
+lowercase letters. Uppercase is technically allowed; the lowercase form of the GitHub username
+`AegirAexx` follows the reverse-DNS convention (GitHub usernames are case-insensitive, **unverified**
+here but widely documented).
+
+Alternatives considered: `io.github.ori_aegir.icelandickeyboard` (dropped with the move off the work
+account, D-006) and a reverse-DNS name under a domain the author owns (rejected, see D-008).
