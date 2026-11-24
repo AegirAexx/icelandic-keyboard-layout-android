@@ -46,7 +46,8 @@ to `Đ` / `đ` instead of `Ð` / `ð`. Details and verbatim source are in
 
 - Sideload first. Then publish (F-Droid, possibly Google Play) if no equivalent app exists. See
   `docs/research/publishing.md`.
-- License: Apache-2.0 (D-003). The repo is not yet pushed to any remote.
+- License: Apache-2.0 (D-003). Repository: `https://github.com/ORI-Aegir/icelandic-keyboard-layout-android`
+  (D-005).
 - Support as many Android versions as practical. Layout selection UI changed in Android 14, and OEM
   skins (e.g. Samsung One UI) differ, so test on real devices.
 - Keep everything else identical to AOSP's Icelandic layout unless a separate, documented bug is found.

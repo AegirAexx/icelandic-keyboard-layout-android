@@ -33,3 +33,19 @@ Append-only. Format: ID, date, decision, why, consequences. Supersede rather tha
 - **Why:** it is volatile, per-session working state, not project documentation.
 - **Consequences:** it has no history or backup, and fresh clones don't have it. Anything durable must
   go into `CONTEXT.md`, `docs/decisions.md` or `docs/research/`.
+
+## D-005 · 24.11.2026 · Repository identity: one app repo on GitHub
+
+- **Decision:** the project is a single Android app repository,
+  `https://github.com/ORI-Aegir/icelandic-keyboard-layout-android`. The AOSP patch is not a separate
+  project in this repo. It is submitted from a clone of `platform/frameworks/base` to AOSP Gerrit, and is
+  only tracked here (`research/upstream.md`, optionally a reference diff under `upstream/`).
+  - Description: "Corrected Icelandic layout for physical keyboards on Android. The built-in layout types
+    Đ/đ (D with stroke) instead of Ð/ð (eth). Install, pick the layout, done. No root, no keyboard app
+    replacement, no permissions."
+  - Topics: `android`, `keyboard-layout`, `icelandic`, `physical-keyboard`, `kcm`, `i18n`, `f-droid`.
+- **Why:** AOSP changes go through Gerrit against Google's repository, so a "monorepo for both" has no
+  second project to hold. The app is the deliverable, and it stays useful after an upstream fix because
+  most devices never receive that update.
+- **Consequences:** store metadata goes in `fastlane/metadata/android/{en-US,is-IS}/`. The application ID
+  is still open (see `research/publishing.md`).

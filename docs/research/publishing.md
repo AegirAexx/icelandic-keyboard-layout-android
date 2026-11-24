@@ -33,3 +33,8 @@ Record findings here with dates.
 
 To decide before the first build. The ID can't change after publishing. It should be a reverse-DNS name
 the author controls, or e.g. `io.github.<username>.<app>` if publishing from GitHub.
+
+With the GitHub account `ORI-Aegir` (D-005), the GitHub-derived candidate is
+`io.github.ori_aegir.icelandickeyboard`. Hyphens aren't allowed in ID segments, so `-` becomes `_`
+(**unverified**: based on the Android `applicationId` naming rules, not checked this session). The ID
+would be tied to that account permanently, so confirm it is the account that should own the app.
