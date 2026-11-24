@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Same attributes as the Icelandic entry in AOSP's
+    packages/InputDevices/res/xml/keyboard_layouts.xml, except the label.
+    keyboardLocale and keyboardLayoutType are read on API 34+ and ignored on older versions.
+-->
+<keyboard-layouts xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <keyboard-layout
+        android:name="keyboard_layout_icelandic"
+        android:label="@string/keyboard_layout_icelandic"
+        android:keyboardLayout="@raw/keyboard_layout_icelandic"
+        android:keyboardLocale="is-Latn"
+        android:keyboardLayoutType="qwerty"
+        tools:targetApi="34" />
+</keyboard-layouts>
