@@ -9,12 +9,12 @@ receivers for `android.hardware.input.action.QUERY_KEYBOARD_LAYOUTS` and reads t
 `android.hardware.input.metadata.KEYBOARD_LAYOUTS` metadata. That metadata points to an XML resource
 listing `.kcm` files. AOSP's own layouts ship this way (the `InputDevices` package).
 
-Shape (sketch, not yet built or tested):
+Shape (as built in `app/src/main/AndroidManifest.xml`; verified on an API 37 emulator, see `testing.md`):
 
 ```xml
 <!-- AndroidManifest.xml -->
 <receiver android:name=".LayoutsReceiver" android:exported="true"
-          android:label="@string/app_name">
+          android:label="@string/keyboard_layouts_label">
     <intent-filter>
         <action android:name="android.hardware.input.action.QUERY_KEYBOARD_LAYOUTS" />
     </intent-filter>
@@ -23,8 +23,9 @@ Shape (sketch, not yet built or tested):
 </receiver>
 ```
 
-The receiver class can be empty. The system reads metadata and never sends a broadcast. That also means
-the "stopped app" state after install should not matter (unverified).
+The receiver class can be empty. The system reads metadata and never sends a broadcast. The "stopped
+app" state after install does not matter: the layout was listed without the app ever being launched
+(verified on API 37 only, `testing.md`).
 
 - Pros: no root, no IME replacement, no accessibility permission. Works with any soft keyboard app. The
   deliverable is a few KB of data.

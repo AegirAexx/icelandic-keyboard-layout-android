@@ -38,7 +38,8 @@ to `Đ` / `đ` instead of `Ð` / `ð`. Details and verbatim source are in
    public "keyboard layout provider" mechanism (a `BroadcastReceiver` for
    `android.hardware.input.action.QUERY_KEYBOARD_LAYOUTS` plus a `.kcm` resource). It needs no root,
    replaces no IME, and works with Gboard, Samsung Keyboard and others. The user selects the layout under
-   the physical keyboard settings.
+   the physical keyboard settings. Built in `app/` (application ID `io.github.aegiraexx.icelandickeyboard`,
+   D-008).
 2. **Real fix:** report the bug on Google's Issue Tracker and submit a patch to AOSP Gerrit. The patch is
    a four-line change in one file. See `docs/research/upstream.md`.
 

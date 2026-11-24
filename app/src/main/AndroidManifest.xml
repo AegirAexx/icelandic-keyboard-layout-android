@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <application android:label="@string/app_name">
+
+        <!--
+            Keyboard layout provider. InputManagerService finds this receiver through the intent
+            filter and reads the layouts from its metadata. It never sends a broadcast to it.
+            Same shape as AOSP's packages/InputDevices/AndroidManifest.xml.
+        -->
+        <receiver
+            android:name=".LayoutsReceiver"
+            android:exported="true"
+            android:label="@string/keyboard_layouts_label">
+            <intent-filter>
+                <action android:name="android.hardware.input.action.QUERY_KEYBOARD_LAYOUTS" />
+            </intent-filter>
+            <meta-data
+                android:name="android.hardware.input.metadata.KEYBOARD_LAYOUTS"
+                android:resource="@xml/keyboard_layouts" />
+        </receiver>
+    </application>
+</manifest>

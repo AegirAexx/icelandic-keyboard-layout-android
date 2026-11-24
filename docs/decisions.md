@@ -79,3 +79,28 @@ Append-only. Format: ID, date, decision, why, consequences. Supersede rather tha
 - **Consequences:** the ID can never change after publishing (Play treats a new ID as a new app; see
   `research/publishing.md`). It is tied to the GitHub username `AegirAexx`; renaming that account would
   leave the ID pointing at a name the author no longer holds, so don't rename it.
+
+## D-009 · 24.11.2026 · Build stack
+
+- **Decision:** single `:app` module. Gradle 9.9.2 through the wrapper (distribution sha256 pinned in
+  `gradle-wrapper.properties`), AGP 9.5.2 via a version catalog, AGP's built-in Kotlin (no separate
+  Kotlin plugin; it pulls `kotlin-stdlib` 2.2.10). `compileSdk` and `targetSdk` 37. Release builds use R8
+  and resource shrinking. No AndroidX or other libraries.
+- **Why:** the latest stable versions on 24.11.2026 (AGP from Google's Maven metadata, Gradle from
+  services.gradle.org). AGP 9.5 requires Gradle ≥ 9.6.0 and JDK 17, and supports up to API 37
+  (https://developer.android.com/build/releases/gradle-plugin, read 24.11.2026). The only code is an
+  empty `BroadcastReceiver`, so no libraries are needed. R8 strips the Kotlin stdlib: the release APK is
+  5.8 KB.
+- **Consequences:** building needs JDK 17+ (Android Studio's bundled JBR works). Kotlin reflection
+  metadata (`kotlin/**.kotlin_builtins`) is excluded from the APK. Gradle reports one deprecation
+  (`Configuration.setVisible`), not from our build scripts (**unverified** that it comes from AGP).
+
+## D-010 · 24.11.2026 · minSdk 16
+
+- **Decision:** `minSdk = 16` (Android 4.1).
+- **Why:** the keyboard layout provider mechanism (`QUERY_KEYBOARD_LAYOUTS`) was added in API 16, and the
+  app uses no newer API. A lower floor costs nothing here and reaches old tablets, which fits the target
+  users (CONTEXT.md). AGP 9.5.2 accepts it.
+- **Consequences:** `keyboardLocale` / `keyboardLayoutType` are API 34+ and ignored on older versions
+  (lint suppressed with `tools:targetApi`). Behavior below API 37 is **untested**. If a future dependency
+  or AGP release needs a higher floor, raise it in a new decision.

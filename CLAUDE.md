@@ -57,6 +57,8 @@ stays machine-agnostic.
 |---|---|
 | `docs/research/root-cause.md` | Verified AOSP source of the bug, Unicode details |
 | `docs/research/fix-approaches.md` | Options for a sideloadable fix, with trade-offs |
+| `docs/research/kcm-diff.md` | Line-by-line diff of our KCM against AOSP, with justification |
+| `docs/research/testing.md` | Test results per device, emulator test procedure, findings |
 | `docs/research/upstream.md` | Plan for reporting and patching the bug in AOSP |
 | `docs/research/publishing.md` | Prior art check, F-Droid and Google Play notes, application ID |
 | `docs/decisions.md` | Numbered decision log |

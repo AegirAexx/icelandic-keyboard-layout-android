@@ -42,7 +42,15 @@ _Coming soon._ Step-by-step instructions per Android version and manufacturer wi
 
 ## Building from source
 
-_Coming soon._ Requires Android Studio (or the Android SDK) and JDK 17+.
+Requires the Android SDK (API 37) and JDK 17 or newer. Android Studio ships both.
+
+```sh
+./gradlew assembleDebug     # app/build/outputs/apk/debug/app-debug.apk
+./gradlew assembleRelease   # unsigned; signing is not set up yet
+```
+
+On Windows, use `gradlew.bat`. Point Gradle at the SDK with `ANDROID_HOME` or `sdk.dir` in
+`local.properties`.
 
 ## Upstream
 
