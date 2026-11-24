@@ -13,3 +13,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Instructions screen (English and Icelandic) with a button to the physical keyboard settings and a
   key test that shows whether the key right of P types ð or đ.
 - App icon.
+
+### Changed
+- The corrected layout declares the locales `is-IS,is-Latn` (AOSP: `is-Latn`), so Android 14+ selects
+  it automatically for Gboard's Icelandic language instead of the broken stock layout.
+- Setup steps: add Icelandic to the on-screen keyboard's languages first.

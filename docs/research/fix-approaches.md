@@ -29,10 +29,13 @@ app" state after install does not matter: the layout was listed without the app 
 
 - Pros: no root, no IME replacement, no accessibility permission. Works with any soft keyboard app. The
   deliverable is a few KB of data.
-- Cons: the user has to select the layout manually per keyboard (and on Android 14+ per IME language).
-  OEM settings UIs vary.
-- To verify: whether Android 14+ `keyboardLocale` / `keyboardLayoutType` attributes cause auto-selection,
-  and which layout wins when two claim `is-Latn`. Also Samsung One UI behavior.
+- Cons: below Android 14, and on Android 14+ for IMEs whose Icelandic subtype isn't tagged `is-IS`,
+  the user has to select the layout manually per keyboard (on Android 14+ also per IME language). OEM
+  settings UIs vary.
+- Answered (24.11.2026): Android 14+ auto-selects by `keyboardLocale` per IME subtype, and with equal
+  locales the stock layout usually wins the tie. D-012 makes ours win for `is-IS` subtypes (Gboard).
+  See `layout-selection.md`.
+- To verify: Samsung One UI behavior.
 - Prior art (unverified details): ExKeyMo, a web tool that generates custom-layout APKs this way.
 
 ## 2. Custom IME that remaps hardware keys

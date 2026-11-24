@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
     Same attributes as the Icelandic entry in AOSP's
-    packages/InputDevices/res/xml/keyboard_layouts.xml, except the label.
+    packages/InputDevices/res/xml/keyboard_layouts.xml, except the label and keyboardLocale.
+    keyboardLocale adds "is-IS" to AOSP's "is-Latn" so that automatic selection on API 34+ prefers
+    this layout over the stock one for IME subtypes tagged is-IS (e.g. Gboard), and keeps AOSP's
+    score for any other Icelandic subtype. The scorer takes the best of a layout's locales. See D-012
+    and docs/research/layout-selection.md.
     keyboardLocale and keyboardLayoutType are read on API 34+ and ignored on older versions.
 -->
 <keyboard-layouts xmlns:android="http://schemas.android.com/apk/res/android"
@@ -11,7 +15,7 @@
         android:name="keyboard_layout_icelandic"
         android:label="@string/keyboard_layout_icelandic"
         android:keyboardLayout="@raw/keyboard_layout_icelandic"
-        android:keyboardLocale="is-Latn"
+        android:keyboardLocale="is-IS,is-Latn"
         android:keyboardLayoutType="qwerty"
         tools:targetApi="34" />
 </keyboard-layouts>
