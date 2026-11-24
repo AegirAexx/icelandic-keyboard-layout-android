@@ -28,12 +28,21 @@ What the project is lives in `CONTEXT.md`, and where it stands lives in `HANDOFF
 
 ## Environment
 
-- Windows 11, PowerShell 7 only. No bash. Use `\` in paths.
-- Git is on PATH. Write multi-line commit messages as PowerShell here-strings (`@'...'@`).
-- Android Studio Rabbit 2 (2026.2.2 Patch 2) is installed. SDK/adb are believed present but not yet
-  verified from the shell.
+The project is worked on from more than one machine and OS (currently Linux and Windows). This file
+stays machine-agnostic.
+
+- Detect the OS and shell from the session environment. Don't assume one. Use that shell's syntax and
+  path separators.
+- Machine-specific facts (OS, shell, installed tools, SDK paths, what was verified) go in the
+  **"This machine"** section of `HANDOFF.md`, never here or in other tracked files. If that section
+  describes a different OS than the current session, the file came from elsewhere: re-verify and
+  rewrite the section.
+- Build through the Gradle wrapper (`./gradlew` or `gradlew.bat`), not a system Gradle. Machine paths
+  belong in the gitignored `local.properties`.
 - Line endings: LF everywhere except `*.bat`/`*.cmd`/`*.ps1` (CRLF). Enforced by `.gitattributes` and
   `.editorconfig`.
+- `gradlew` must be committed as executable (mode `100755`). Windows does not track this. After adding
+  it from Windows, run `git update-index --chmod=+x gradlew`.
 
 ## Engineering conventions
 

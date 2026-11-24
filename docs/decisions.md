@@ -59,3 +59,13 @@ Append-only. Format: ID, date, decision, why, consequences. Supersede rather tha
 - **Consequences:** the application ID candidate changes from `io.github.ori_aegir.icelandickeyboard` to
   `io.github.aegiraexx.icelandickeyboard` (still undecided, see `research/publishing.md`). The first two
   commits carry the work author email; history was not rewritten.
+
+## D-007 · 24.11.2026 · Machine-agnostic agent instructions
+
+- **Decision:** `CLAUDE.md` contains no OS-, shell- or machine-specific facts. The agent detects its
+  environment per session, and each machine records its own setup in the "This machine" section of its
+  local `HANDOFF.md`.
+- **Why:** the project is worked on from a Linux laptop and a Windows laptop. A tracked file that
+  describes one machine misleads the agent on the other.
+- **Consequences:** builds go through the Gradle wrapper; `gradlew` must be committed as executable;
+  machine paths stay in the gitignored `local.properties`. Builds on D-004: `HANDOFF.md` is per-machine.
