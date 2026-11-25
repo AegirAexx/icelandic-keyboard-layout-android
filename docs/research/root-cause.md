@@ -76,4 +76,4 @@ when testing by eye. **Always verify code points, not glyphs.**
 - `RIGHT_BRACKET` → `'` / `?`, `BACKSLASH` → `+` / `*`.
 - Compared key-by-key against Windows (Microsoft's KBDIC) and xkeyboard-config on 25.11.2026: no second
   Ð/ð-style error, three AltGr differences left as they are. See `kcm-audit.md`. Not compared: ÍST 125
-  (the standard) and Apple's macOS layout.
+  (the standard) and Apple's macOS layout (out of scope, D-016).
