@@ -1,6 +1,7 @@
 # Publishing
 
-**Status:** prior-art check done by web and GitHub search (25.11.2026); no store submission started.
+**Status:** prior-art check done by web, GitHub and direct store searches (25.11.2026); no store
+submission started.
 The F-Droid and Google Play notes below are mostly **unverified**. Check current policies before acting
 on them.
 
@@ -17,15 +18,15 @@ Record findings here with dates.
 
 ### Findings (25.11.2026)
 
-- **No equivalent app found by web search.** Searches (25.11.2026) turned up no F-Droid or Google Play
-  app that ships a corrected Icelandic physical-keyboard layout. Neither store was searched directly.
-  The only Icelandic hit was "Icelandic for AnySoftKeyboard"
+- **No equivalent app found.** Web searches (25.11.2026) turned up no F-Droid or Google Play app that
+  ships a corrected Icelandic physical-keyboard layout, and the user's direct store searches (below)
+  agree. The only Icelandic hit was "Icelandic for AnySoftKeyboard"
   (`com.anysoftkeyboard.languagepack.icelandic`, Apache-2.0, 5.1.6158, 15.07.2025,
   https://f-droid.org/packages/com.anysoftkeyboard.languagepack.icelandic/). Its description says it adds
   Icelandic layouts and a dictionary to the AnySoftKeyboard app, so it is an on-screen language pack for
   another IME, not a physical layout (judged from the store text; the package was not inspected).
-  Limits: web search is not an exhaustive store search. Google Play was not searched directly, and
-  ExKeyMo-generated APKs would not be listed under an Icelandic name.
+  Limits: store searches are keyword searches, and ExKeyMo-generated APKs would not be listed under an
+  Icelandic name.
 - **GitHub code search** (`QUERY_KEYBOARD_LAYOUTS`, 25.11.2026) found other layout-provider apps, none
   built for Icelandic:
   `calin-darie/extra-keyboard-layouts`, `ris58h/custom-keyboard-layout` and `ris58h/exkeymo`,
@@ -33,6 +34,8 @@ Record findings here with dates.
   `Viatorus/neo2-external-keyboard`, `alisabzevari/PersianHardwareKeyboard`, among others. They confirm
   the mechanism is established and give no reason to doubt D-001. Two of them,
   `ris58h/exkeymo` and `OctoNezd/OculusLayouts`, contain the uncorrected Icelandic KCM.
+- **Google Play and F-Droid, searched directly by the user on 25.11.2026:** nothing found that
+  addresses the ð problem. User-reported, no queries or screenshots kept.
 - Details of the upstream search: `upstream.md` §1.
 
 ## F-Droid (unverified)

@@ -179,3 +179,15 @@ Append-only. Format: ID, date, decision, why, consequences. Supersede rather tha
   start-of-session reading in one place.
 - **Consequences:** the roadmap must be updated and committed when tasks change (CLAUDE.md, end of
   session). It stays machine-agnostic: which machine takes which task is not recorded there.
+
+## D-015 · 25.11.2026 · Keep the KCM audit differences as they are; the upstream patch stays Ð/ð only
+
+- **Decision:** after the key-by-key audit (`research/kcm-audit.md`), change nothing in the layout
+  beyond the Ð/ð fix. The three AltGr differences from Windows (D1: no `°` on the key under Esc; D2, D3:
+  plain `^` and `` ` `` instead of dead keys) stay as AOSP has them, and the Gerrit patch (R-2) contains
+  only the Ð/ð change.
+- **Why:** the references disagree on these keys (Windows, xkeyboard-config's `basic` and `mac`
+  variants), the standard (ÍST 125) was not read, and each would be a separate behavior change. The
+  project's rule is that the only change from AOSP is the intended fix (CLAUDE.md).
+- **Consequences:** revisit if ÍST 125 or a user report shows AOSP wrong on those keys. Then add the
+  correction to the same Gerrit patch if it is not yet merged, and to the app as an update (R-8).
