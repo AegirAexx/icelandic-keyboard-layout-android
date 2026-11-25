@@ -4,7 +4,7 @@ Open tasks, tracked in git so they carry between machines (D-014). `HANDOFF.md` 
 session state; this file holds the shared task list. Mark a task done with the date and the PR or
 commit, then remove it once nothing refers to it.
 
-**Next up:** R-2 (upstream, started early because Gerrit review is slow) and R-3 (emulators). R-3
+**Next up:** R-2 (upstream, started early because the path to a public fix is slow) and R-3 (emulators). R-3
 needs no physical device and removes the main unknown before the first release (R-5). R-8 waits only
 on ÍST 125.
 
@@ -19,14 +19,18 @@ KCMs. Findings in `research/publishing.md` §0 and `research/upstream.md` §1.
 - If ÍST 125 (R-8) turns up more corrections, one patch should carry them all, but don't hold the bug
   report for it.
 - Gerrit needs the user's personal Google account and an individual contributor agreement.
-- **Target branch is `android17-release`** (the `android-latest-release` manifest), not `aosp-main`,
-  which is read-only. The bug is present there. Google reviews and cherry-picks accepted changes into
-  its internal tree, and the public repo gets them only with a Q2 or Q4 source drop
-  (`research/upstream.md` §3 and §4). Expect a long timeline and no quick public merge.
-- Open points before the patch: the Gerrit/`repo` setup (the docs describe `repo` only; plain Git is
-  **unverified**), where to file (Android Public Tracker, component "Framework"), and signing the
-  Individual CLA with a personal Google account.
-- Start early: the upstream review takes a long time.
+- **Target branch is `android17-release`** today (the `android-latest-release` manifest), not
+  `aosp-main`, which is read-only. The bug is present there. Re-read the manifest's default revision
+  right before uploading: it moves with each source drop, and a Q4 2026 drop may be near.
+- Google reviews and cherry-picks accepted changes into its internal tree. The public repo gets them
+  only with a Q2 or Q4 source drop, and there is no notification of acceptance
+  (`research/upstream.md` §3 and §4). Expect a long timeline and no quick public merge. How long
+  review takes is not documented.
+- Open points before the patch: the Gerrit setup (the guide shows `repo`; the FAQ permits plain Git,
+  which is **unverified** in practice), where to file (Android Public Tracker, component "Framework"),
+  and signing the Individual CLA online with a personal account. Whether an employer could have a
+  claim is for the user's own contract to answer; it hasn't been researched.
+- Start early: the path from a proposal to a public fix is slow.
 
 ## R-3 · Emulator tests below Android 16
 
