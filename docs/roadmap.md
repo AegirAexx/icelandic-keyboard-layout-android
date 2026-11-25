@@ -4,27 +4,20 @@ Open tasks, tracked in git so they carry between machines (D-014). `HANDOFF.md` 
 session state; this file holds the shared task list. Mark a task done with the date and the PR or
 commit, then remove it once nothing refers to it.
 
-**Next up:** R-1's five Issue Tracker results to read, then R-2 (upstream, started early because Gerrit
-review is slow) and R-3 (emulators). R-3 needs no physical device and removes the main unknown before
-the first release (R-5). R-8 waits only on ÍST 125.
+**Next up:** R-2 (upstream, started early because Gerrit review is slow) and R-3 (emulators). R-3
+needs no physical device and removes the main unknown before the first release (R-5). R-8 waits only
+on ÍST 125.
 
-## R-1 · Prior art and existing upstream reports (almost done 25.11.2026)
-
-- **Done:** web, GitHub, Google Play and F-Droid searches found no equivalent app; the Gerrit queries
-  found no change aimed at the file; the user's Issue Tracker searches show no result title that
-  matches; AOSP `main` still has the bug and Icelandic is the only outlier among the 50 AOSP KCMs.
-  Findings in `research/publishing.md` §0 and `research/upstream.md` §1.
-- **Left (the user, logged in):** open five Issue Tracker results whose bodies are unread: 144652982,
-  65338182, 183408437, 264112020 and 516075789 (`research/upstream.md` §1). If one is this bug, R-2
-  becomes "add to it".
-- Remove this entry once those are read and logged.
+Prior-art check (the former R-1), done 25.11.2026: no equivalent app, no Gerrit change and no Issue
+Tracker report found; AOSP `main` still has the bug and Icelandic is the only outlier among its 50
+KCMs. Findings in `research/publishing.md` §0 and `research/upstream.md` §1.
 
 ## R-2 · Report the bug upstream and submit the patch
 
-- File the bug on the Issue Tracker, then submit the four-line KCM patch to AOSP Gerrit
-  (`research/upstream.md`).
-- Depends on R-1's five Issue Tracker results to read. If ÍST 125 (R-8) turns up more corrections, one
-  patch should carry them all, but don't hold the bug report for it.
+- File a new bug on the Issue Tracker (no existing report found), then submit the four-line KCM patch
+  to AOSP Gerrit (`research/upstream.md`).
+- If ÍST 125 (R-8) turns up more corrections, one patch should carry them all, but don't hold the bug
+  report for it.
 - Gerrit needs the user's personal Google account and an individual contributor agreement.
 - Before relying on a quick merge, find out how the public AOSP `main` is updated and how external
   changes reach it. Its latest commit was dated 26.03.2025 when read (`research/upstream.md` §1).

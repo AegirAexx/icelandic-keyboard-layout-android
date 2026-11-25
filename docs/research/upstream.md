@@ -1,7 +1,7 @@
 # Upstream: reporting and fixing in AOSP
 
-**Status:** prior-art check almost done (25.11.2026); five Issue Tracker results still to be opened
-(R-1). No bug filed, no patch yet.
+**Status:** prior-art check done (25.11.2026): no existing report or fix found. No bug filed, no patch
+yet.
 
 ## 1. Check for existing reports
 
@@ -19,9 +19,10 @@
   `keyboard_layout_icelandic` 0, `icelandic layout` 21, `icelandic keyboard` 19. Status filters were
   not recorded. Matching is fuzzy: `U+0111` returned mostly unrelated issues, so an empty or irrelevant
   list is not proof of absence. This is judged from titles; no issue body was read.
-- **To open and read (titles only seen, bodies unread).** Rows with a Chromium badge are probably Chromium
-  issues, not Android (inferred from the badge). These carry no badge, so they may be Android or
-  something else; the component is unknown:
+- **Opened and read by the user, 25.11.2026: none of the five is relevant** (user-reported; no notes
+  or screenshots kept, so their components and contents are not recorded here). I only saw their
+  titles. Rows with a Chromium badge are probably Chromium issues, not Android (inferred from the
+  badge). These five carried no badge:
   - 144652982, "Include missing ð anð Ð", Feature Request, Obsolete, 29.06.2021. Matched in three searches.
   - 65338182, "Emulator doesn't support typing @ for icelandic keyboards", Bug, Obsolete, 08.11.2022.
     Relevant to our emulator test procedure.
@@ -34,7 +35,9 @@
   locales] Need to support Icelandic locale", 40843551 "Impossible to type accented characters on
   Icelandic keyboard into password field on Mac OS", 40093987 "Security: Idn-spoof with using U+00F0".
   The two 2013 Chromebook issues concern ChromeOS input methods.
-- Record the result of reading the five issues here, and the issue ID and date if a bug is filed.
+- **Conclusion:** no existing Issue Tracker report found, so R-2 files a new bug. Limits: the
+  tracker search is fuzzy, only public issues are visible, and the status filters were not recorded.
+  Record the issue ID and date here when the bug is filed.
 
 ### Findings (25.11.2026)
 
