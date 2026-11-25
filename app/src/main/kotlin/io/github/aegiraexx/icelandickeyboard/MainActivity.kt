@@ -8,6 +8,7 @@ import android.hardware.input.InputManager
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.util.TypedValue
 import android.view.InputDevice
 import android.view.KeyCharacterMap
 import android.view.KeyEvent
@@ -17,8 +18,9 @@ import android.widget.TextView
 import java.util.Locale
 
 /**
- * Instructions screen: explains what the app fixes, opens the physical keyboard settings, and tests
- * the key right of P.
+ * Two tabs. "Set up" explains what the app fixes and opens the physical keyboard settings. "Test"
+ * tests the key right of P. The app switches to "Test" when the user comes back from the settings
+ * through the button, and when the key is pressed on "Set up", so the result is never hidden.
  *
  * The test reads key events in the activity itself, with no text field, so no on-screen keyboard is
  * shown. Events from virtual devices (IMEs, `adb shell input`) are ignored, so an on-screen keyboard
@@ -29,6 +31,15 @@ class MainActivity : Activity(), InputManager.InputDeviceListener {
 
     private lateinit var status: TextView
     private lateinit var inputManager: InputManager
+    private lateinit var tabs: Array<View>
+    private lateinit var tabIndicators: Array<View>
+    private lateinit var pages: Array<View>
+
+    /** Index of the tab shown: [TAB_SETUP] or [TAB_TEST]. */
+    private var currentTab = TAB_SETUP
+
+    /** True after the button opened the settings, until the user comes back. */
+    private var openedSettings = false
 
     /**
      * Result of the last key test, or null if no key has been pressed since the screen was last
@@ -46,13 +57,43 @@ class MainActivity : Activity(), InputManager.InputDeviceListener {
         findViewById<View>(R.id.open_settings).setOnClickListener { openKeyboardSettings() }
         status = findViewById(R.id.status)
 
+        tabs = arrayOf(findViewById(R.id.tab_setup), findViewById(R.id.tab_test))
+        tabIndicators = arrayOf(
+            findViewById(R.id.tab_setup_indicator),
+            findViewById(R.id.tab_test_indicator),
+        )
+        pages = arrayOf(findViewById(R.id.page_setup), findViewById(R.id.page_test))
+        val accent = themeColor(
+            if (Build.VERSION.SDK_INT >= 21) android.R.attr.colorAccent
+            else android.R.attr.textColorPrimary,
+        )
+        tabs.forEachIndexed { index, tab ->
+            tab.setOnClickListener { showTab(index) }
+            tabIndicators[index].setBackgroundColor(accent)
+        }
+        if (savedInstanceState != null) {
+            currentTab = savedInstanceState.getInt(STATE_TAB, TAB_SETUP)
+            openedSettings = savedInstanceState.getBoolean(STATE_OPENED_SETTINGS)
+        }
+        showTab(currentTab)
+
         applySystemBarInsets(findViewById(R.id.root))
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(STATE_TAB, currentTab)
+        outState.putBoolean(STATE_OPENED_SETTINGS, openedSettings)
     }
 
     override fun onResume() {
         super.onResume()
         inputManager.registerInputDeviceListener(this, null)
         result = null
+        if (openedSettings) {
+            openedSettings = false
+            showTab(TAB_TEST)
+        }
         updateStatus()
     }
 
@@ -73,6 +114,7 @@ class MainActivity : Activity(), InputManager.InputDeviceListener {
         if (event.keyCode == KeyEvent.KEYCODE_LEFT_BRACKET && isPhysical(event)) {
             if (event.action == KeyEvent.ACTION_DOWN && event.repeatCount == 0) {
                 result = describe(event)
+                showTab(TAB_TEST)
                 updateStatus()
             }
             return true
@@ -97,6 +139,30 @@ class MainActivity : Activity(), InputManager.InputDeviceListener {
         }
     }
 
+    private fun showTab(index: Int) {
+        currentTab = index
+        for (i in tabs.indices) {
+            val selected = i == index
+            tabs[i].isSelected = selected
+            tabs[i].alpha = if (selected) 1f else 0.6f
+            tabIndicators[i].visibility = if (selected) View.VISIBLE else View.INVISIBLE
+            pages[i].visibility = if (selected) View.VISIBLE else View.GONE
+        }
+    }
+
+    /** Resolves a color theme attribute, which may point to a color or a color state list. */
+    private fun themeColor(attr: Int): Int {
+        val value = TypedValue()
+        if (!theme.resolveAttribute(attr, value, true)) return 0xFF808080.toInt()
+        if (value.resourceId == 0) return value.data
+        return if (Build.VERSION.SDK_INT >= 23) {
+            getColorStateList(value.resourceId).defaultColor
+        } else {
+            @Suppress("DEPRECATION")
+            resources.getColorStateList(value.resourceId).defaultColor
+        }
+    }
+
     private fun updateStatus() {
         status.text = result ?: getString(
             if (hasPhysicalKeyboard()) R.string.test_waiting else R.string.test_no_keyboard,
@@ -118,6 +184,7 @@ class MainActivity : Activity(), InputManager.InputDeviceListener {
             if (action == null) continue
             try {
                 startActivity(Intent(action))
+                openedSettings = true
                 return
             } catch (e: ActivityNotFoundException) {
                 // Try the next one.
@@ -127,7 +194,8 @@ class MainActivity : Activity(), InputManager.InputDeviceListener {
 
     /**
      * targetSdk 35+ makes the window draw behind the system bars on API 35+, so pad the content by
-     * the bar and cutout insets. On older versions the decor view consumes them and this gets zeros.
+     * the bar and cutout insets. The root does not scroll, so nothing draws under the bars. On older
+     * versions the decor view consumes the insets and this gets zeros.
      */
     private fun applySystemBarInsets(root: View) {
         if (Build.VERSION.SDK_INT < 20) return
@@ -151,6 +219,11 @@ class MainActivity : Activity(), InputManager.InputDeviceListener {
     }
 
     private companion object {
+        const val TAB_SETUP = 0
+        const val TAB_TEST = 1
+        const val STATE_TAB = "tab"
+        const val STATE_OPENED_SETTINGS = "opened_settings"
+
         const val ETH_SMALL = 0x00F0
         const val ETH_CAPITAL = 0x00D0
         const val D_STROKE_SMALL = 0x0111

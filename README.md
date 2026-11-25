@@ -38,10 +38,25 @@ _Coming soon._ Planned channels: GitHub Releases (APK), F-Droid, and possibly Go
 
 ## Usage
 
-Open the app. It explains the setup, opens the physical keyboard settings, and has a key test: press
-the key right of `P` and it shows whether it types `ð` (fixed) or `đ` (stock layout).
+Open the app. The **Set up** tab explains the setup and opens the physical keyboard settings. The
+**Test** tab checks the key right of `P` and shows whether it types `ð` (fixed) or `đ` (stock layout).
 
-Step-by-step instructions per Android version and manufacturer will go here.
+If your on-screen keyboard is Gboard with Icelandic enabled, Android 14 and later pick the corrected
+layout automatically. Otherwise, select **Icelandic (corrected Ð)** by hand.
+
+### OnePlus (OxygenOS 16)
+
+Verified on a OnePlus 12, Android 16.
+
+1. Turn on OTG: open Settings, search for "OTG", and switch it on. OxygenOS may switch it off again
+   after a while without a device.
+2. Connect the keyboard.
+3. In the app, tap **Open keyboard settings** (or Settings → search "Physical keyboard").
+4. Tap **Keyboard layout**. There is one entry per on-screen keyboard: Gboard by language (e.g.
+   "Íslenska (Ísland)"), FUTO by name ("FUTO Keyboard").
+5. Open each entry you use and select **Icelandic (corrected Ð)**.
+
+Other manufacturers and Android versions will be added as they are tested.
 
 ## Building from source
 

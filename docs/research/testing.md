@@ -15,6 +15,7 @@ How the layout was verified, and how to repeat it. Results are listed per device
 | 24.11.2026 | Same phone and Preonic | 16 (API 36) | debug, v0.1.0 at `d80dfd5` | **Pass.** "Icelandic (corrected Ð)" selected by hand under FUTO and under Gboard `is-IS`: U+0078 U+00F0 U+00D0 U+0079 with both. Installed over adb with no on-device prompt. |
 | 24.11.2026 | Same phone; Ducky keyboard (`04d9:0295`, "USB-HID Keyboard"), never connected before | 16 (API 36) | debug, v0.1.0 at `d80dfd5` | **Pass (D-012 on real hardware).** No manual selection: Settings shows "Automatic: Icelandic (corrected Ð)" under Gboard Íslenska (Ísland), and the key types U+00F0 U+00D0. Under FUTO it shows "Default" and types U+005B U+007B (no Icelandic layout). |
 | 24.11.2026 | Same phone, both keyboards | 16 (API 36) | debug, v0.1.0 at `d80dfd5` | **Pass.** In-app key test: Preonic (ours selected) reports Ð U+00D0 as correct; Ducky under FUTO ("Default") reports `[` U+005B with the "not an Icelandic layout" message. Button opens `Settings$PhysicalKeyboardActivity`. **Bug:** scrolled content draws under the status bar. |
+| 25.11.2026 | OnePlus 12, Ducky (FUTO, "Default"); API 37 emulator | 16 (API 36); 17 (API 37) | debug, tabbed UI (D-013) | **Pass.** No text under the status bar when scrolled; bottom padding present. Returning from the settings button opens "Test". Pressing the key on "Set up" switches to "Test" and shows `[` U+005B. The selected tab survives recreation (app locale change). IS labels fit. Light theme checked on the emulator, dark on the phone. Lint clean. |
 
 Not yet tested: Samsung One UI, Android versions below 16 on real hardware (minSdk is 16, D-010),
 Bluetooth keyboards, tablets.
@@ -132,4 +133,4 @@ settings path per device and OEM, since it feeds the user instructions (D-001).
   keyboard.
 - **App bug:** the `ScrollView` root gets the system bar insets as padding with
   `clipToPadding="false"`, so scrolled text draws under the status bar and collides with the clock.
-  The emulator check on 24.11.2026 only looked at the unscrolled screen.
+  The emulator check on 24.11.2026 only looked at the unscrolled screen. Fixed in D-013.
