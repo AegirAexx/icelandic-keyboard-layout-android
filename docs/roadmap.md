@@ -23,8 +23,8 @@ the first release (R-5). R-8 waits only on ÍST 125.
 
 - File the bug on the Issue Tracker, then submit the four-line KCM patch to AOSP Gerrit
   (`research/upstream.md`).
-- Depends on R-1's Issue Tracker search, and on R-8 if the audit finds more corrections (then one patch
-  carries them all). Gerrit needs the user's personal Google account and an individual contributor
+- Depends on R-1's five Issue Tracker results to read. If ÍST 125 (R-8) turns up more corrections, one
+  patch should carry them all, but don't hold the bug report for it. Gerrit needs the user's personal Google account and an individual contributor
   agreement.
 - Before relying on a quick merge, find out how the public AOSP `main` is updated and how external
   changes reach it. Its latest commit was dated 26.03.2025 when read (`research/upstream.md` §1).
@@ -58,7 +58,8 @@ with it (procedure: `research/testing.md`):
 - Release keystore outside the repo. The user decides where it lives and how it is backed up: a lost
   key means existing installs can't be updated.
 - Signed build, GitHub Release with the APK, CHANGELOG entry.
-- After R-3 and R-8, so the first release makes no untested claims. Decide the distribution channel
+- After R-3, so the first release makes no untested claims. R-8 is done apart from ÍST 125; the
+  release only needs the user's decision on that, not its outcome. Decide the distribution channel
   first: GitHub, F-Droid and Google Play sign differently, so a user can't switch channel without
   uninstalling. Installs of the debug build must be
   uninstalled first (different signature), which resets manual layout choices.
@@ -75,9 +76,10 @@ with it (procedure: `research/testing.md`):
 
 ## R-8 · Key-by-key audit of the Icelandic KCM (done 25.11.2026 except ÍST 125)
 
-- **Done:** compared against Windows (ReactOS KBDIC) and Linux (xkeyboard-config). No second Ð/ð-style
-  error; three AltGr differences (D1 to D3), none clearly wrong. Result: `research/kcm-audit.md`.
-- **Left:** the standard itself, ÍST 125 (paid, Staðlaráð), and macOS Icelandic, were not read. Only
-  ÍST 125 can settle D1 to D3. If it disagrees with AOSP anywhere, add the correction to the Gerrit patch
+- **Done:** compared against Microsoft's KBDIC (via kbdlayout.info) and Linux (xkeyboard-config). No
+  second Ð/ð-style error; three AltGr differences against Windows (D1 to D3), none clearly wrong.
+  Result: `research/kcm-audit.md`.
+- **Left:** the standard itself, ÍST 125 (sold by Staðlaráð), and Apple's macOS layout, were not read.
+  Only ÍST 125 can settle D1 to D3. If it disagrees with AOSP anywhere, add the correction to the Gerrit patch
   (R-2) and the app. Optional: the user decides whether to buy it.
 - Remove this entry once ÍST 125 is checked or the user decides not to.
