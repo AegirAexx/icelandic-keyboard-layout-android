@@ -20,5 +20,5 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 - Setup steps: add Icelandic to the on-screen keyboard's languages first.
 - The app has two tabs, "Set up" and "Test", and switches to "Test" when you come back from the
   settings or press the key. Text no longer scrolls under the status bar.
-- Setup steps: OTG hint for OnePlus/OPPO, the "Keyboard layout" path, and keyboards such as FUTO that
+- Setup steps: OTG hint for OnePlus (and likely OPPO), the "Keyboard layout" path, and keyboards such as FUTO that
   are listed by name. Verified on a OnePlus 12 (Android 16).

@@ -32,6 +32,7 @@ class MainActivity : Activity(), InputManager.InputDeviceListener {
     private lateinit var status: TextView
     private lateinit var inputManager: InputManager
     private lateinit var tabs: Array<View>
+    private lateinit var tabLabels: Array<View>
     private lateinit var tabIndicators: Array<View>
     private lateinit var pages: Array<View>
 
@@ -58,6 +59,7 @@ class MainActivity : Activity(), InputManager.InputDeviceListener {
         status = findViewById(R.id.status)
 
         tabs = arrayOf(findViewById(R.id.tab_setup), findViewById(R.id.tab_test))
+        tabLabels = arrayOf(findViewById(R.id.tab_setup_label), findViewById(R.id.tab_test_label))
         tabIndicators = arrayOf(
             findViewById(R.id.tab_setup_indicator),
             findViewById(R.id.tab_test_indicator),
@@ -144,7 +146,8 @@ class MainActivity : Activity(), InputManager.InputDeviceListener {
         for (i in tabs.indices) {
             val selected = i == index
             tabs[i].isSelected = selected
-            tabs[i].alpha = if (selected) 1f else 0.6f
+            // Dim only the label, so the focus highlight on the tab stays fully visible.
+            tabLabels[i].alpha = if (selected) 1f else 0.6f
             tabIndicators[i].visibility = if (selected) View.VISIBLE else View.INVISIBLE
             pages[i].visibility = if (selected) View.VISIBLE else View.GONE
         }

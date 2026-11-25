@@ -10,19 +10,18 @@ How the layout was verified, and how to repeat it. Results are listed per device
 | 24.11.2026 | Same emulator | 17 (API 37) | debug, v0.1.0 + instructions screen | **Pass.** In-app key test: corrected layout reports U+00F0 / U+00D0; stock layout reports U+0111 / U+0110; a non-Icelandic layout reports U+005B. `adb shell input keyevent KEYCODE_LEFT_BRACKET` (virtual device) is ignored. Button opens `Settings$PhysicalKeyboardActivity`. Insets correct under edge-to-edge; EN/IS and light/dark checked by screenshot; adaptive icon renders in the launcher. |
 | 24.11.2026 | Same emulator, Gboard with English (US) + Íslenska (Ísland) | 17 (API 37) | debug, v0.1.0 | **Pass** with the corrected layout selected under both languages (key test U+00F0 with either subtype). Auto-selection under Íslenska picks the stock layout; see `layout-selection.md`. |
 | 24.11.2026 | Same emulator, Gboard with English (US) + Íslenska (Ísland) | 17 (API 37) | debug, v0.1.0 + `keyboardLocale="is-IS"`, then again with `"is-IS,is-Latn"` (D-012) | **Pass** (both). Clean install, no manual selection: AT Translated Set 2 keyboard shows "Automatic: Icelandic (corrected Ð)" under Íslenska and "Automatic: English (US)" under English (US). qwerty2 stays "Automatic: English (US)" under both (hardware language tag, see `layout-selection.md`). Six setup steps render correctly. |
-
 | 24.11.2026 | OnePlus 12 (CPH2581), OxygenOS 16.0.10.601 (EX01); Drop Preonic rev3 (USB-C, QMK) | 16 (API 36) | none (stock only) | **Bug reproduced.** Stock "Icelandic" (an earlier manual choice) under FUTO and under Gboard `is-IS`: typed `x[{y` gives U+0078 U+0111 U+0110 U+0079. |
 | 24.11.2026 | Same phone and Preonic | 16 (API 36) | debug, v0.1.0 at `d80dfd5` | **Pass.** "Icelandic (corrected Ð)" selected by hand under FUTO and under Gboard `is-IS`: U+0078 U+00F0 U+00D0 U+0079 with both. Installed over adb with no on-device prompt. |
 | 24.11.2026 | Same phone; Ducky keyboard (`04d9:0295`, "USB-HID Keyboard"), never connected before | 16 (API 36) | debug, v0.1.0 at `d80dfd5` | **Pass (D-012 on real hardware).** No manual selection: Settings shows "Automatic: Icelandic (corrected Ð)" under Gboard Íslenska (Ísland), and the key types U+00F0 U+00D0. Under FUTO it shows "Default" and types U+005B U+007B (no Icelandic layout). |
 | 24.11.2026 | Same phone, both keyboards | 16 (API 36) | debug, v0.1.0 at `d80dfd5` | **Pass.** In-app key test: Preonic (ours selected) reports Ð U+00D0 as correct; Ducky under FUTO ("Default") reports `[` U+005B with the "not an Icelandic layout" message. Button opens `Settings$PhysicalKeyboardActivity`. **Bug:** scrolled content draws under the status bar. |
 | 25.11.2026 | OnePlus 12, Ducky (FUTO, "Default"); API 37 emulator | 16 (API 36); 17 (API 37) | debug, tabbed UI (D-013) | **Pass.** No text under the status bar when scrolled; bottom padding present. Returning from the settings button opens "Test". Pressing the key on "Set up" switches to "Test" and shows `[` U+005B. The selected tab survives recreation (app locale change). IS labels fit. Light theme checked on the emulator, dark on the phone. Lint clean. |
 
-Not yet tested: Samsung One UI, Android versions below 16 on real hardware (minSdk is 16, D-010),
-Bluetooth keyboards, tablets.
+Not yet tested: API 16–35 (only API 36 on the OnePlus and API 37 on the emulator have run; minSdk is
+16, D-010), Samsung One UI and other OEMs, Bluetooth keyboards, tablets.
 
 ## Findings (emulator, API 37, 24.11.2026)
 
-- **Discovery works without the app ever being launched.** The app has no activity. After `adb install`,
+- **Discovery works without the app ever being launched.** At the time the app had no activity (D-011 added one later). After `adb install`,
   `cmd package query-receivers -a android.hardware.input.action.QUERY_KEYBOARD_LAYOUTS` listed three
   providers: `com.android.inputdevices/.InputDeviceReceiver`, Gboard's
   `com.google.android.apps.inputmethod.libs.kcm.InputDeviceReceiver`, and ours. So the "stopped" state
@@ -107,7 +106,8 @@ settings path per device and OEM, since it feeds the user instructions (D-001).
   the USB-C port stays at `power_role=no-power`, `data_role=no-data`, and a plugged-in keyboard does
   nothing. It had worked two days earlier, so the setting had reverted. On older OxygenOS it turns
   off after about 10 minutes without a device; that timer is **unverified** on 16. The toggle is found
-  by searching Settings for "OTG". Users of OnePlus/OPPO phones need this in the setup steps.
+  by searching Settings for "OTG". OnePlus users need this in the setup steps. OPPO phones share the ColorOS base and the
+  `persist.sys.oplus.*` setting, so they likely need it too (**unverified**).
 - **One USB-C to USB-C cable was not detected at all** (`connected=false` at the Type-C level, with OTG
   on). Another C-to-C cable worked. Why the first failed is **unverified**.
 - **OxygenOS has its own Physical keyboard screen.** Path: Settings → search "Physical keyboard" (or

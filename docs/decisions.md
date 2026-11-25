@@ -152,10 +152,10 @@ Append-only. Format: ID, date, decision, why, consequences. Supersede rather tha
 - **Decision:** the screen from D-011 becomes two tabs under the title: "Set up" (intro, steps,
   settings button, note) and "Test" (hint and key test result). The tab bar is two plain views with an
   accent-colored indicator, not `TabHost` (deprecated in API 30) or Material's `TabLayout`. The app
-  switches to "Test" when the user returns from the settings through the button, and when the key
-  right of P is pressed on "Set up". The selected tab survives recreation. The root no longer
+  switches to "Test" on the first return after the button opened the settings (also if the user
+  went elsewhere in between, e.g. Home and back), and when the key right of P is pressed on "Set up". The selected tab survives recreation. The root no longer
   scrolls; it takes the system bar insets as padding and each tab scrolls on its own. The setup steps
-  gain an OTG hint (OnePlus/OPPO), the "Keyboard layout" path, a note that some IMEs (FUTO) are listed
+  gain an OTG hint (verified on OnePlus; OPPO named as likely, **unverified**), the "Keyboard layout" path, a note that some IMEs (FUTO) are listed
   by name, a note that an automatic choice of our layout needs no change, and point to the "Test" tab.
 - **Why:** the user asked for a more app-like screen; the test was squeezed at the bottom of one long
   page. Setup and test are separate jobs, and the test is what users come back for. A tab can hide
@@ -164,6 +164,7 @@ Append-only. Format: ID, date, decision, why, consequences. Supersede rather tha
   `clipToPadding="false"` drew scrolled text under the status bar (found on the OnePlus 12,
   `research/testing.md`). The text changes come from the same test.
 - **Consequences:** the tab indicator color is `colorAccent` on API 21+ and `textColorPrimary` below,
-  resolved in code. TalkBack hears the tabs as selected or not, but not as tabs (no role without
-  AndroidX). New and changed Icelandic strings need the user's proofreading. Verified on the OnePlus 12
-  (API 36, dark, EN and IS) and the API 37 emulator (light); API < 21 is untested.
+  resolved in code. TalkBack announces the tabs as selected or not, but not as tabs. A role description could be added
+  with a platform `AccessibilityDelegate` (API 19+) if needed. New and changed Icelandic strings need the user's proofreading. Verified on the OnePlus 12
+  (API 36, dark, EN and IS) and the API 37 emulator (light). API 16–35 is untested, including the
+  pre-API 30 insets path and the pre-API 23 and pre-API 21 color branches.

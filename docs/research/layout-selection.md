@@ -162,6 +162,12 @@ Physical keyboard → device shows per language when the user has chosen nothing
 
 Under English (US) all three show "Automatic: English (US)".
 
+The emulator's other keyboard, `qwerty2` (the one the console types through), shows "Automatic:
+English (US)" under Íslenska. That fits the hardware step: qwerty2 likely reports an English language
+tag. This is **unverified**, because `/vendor/usr/idc/qwerty2.idc` is not readable without root. So
+qwerty2 cannot demonstrate auto-selection by typing. Its manual selections can: with "Icelandic
+(corrected Ð)" selected under both languages, the key test passed with either subtype active.
+
 ### Gboard follows the app's locale (verified, emulator)
 
 `dumpsys input_method` `mCurrentSubtype` prints `InputMethodSubtype@<hash>`, and `hashCode()` is the
@@ -200,12 +206,6 @@ D-012 holds on real hardware. A Ducky USB keyboard that had never been connected
 reports no language of its own, showed "Automatic: Icelandic (corrected Ð)" under Gboard Íslenska
 (Ísland) with no manual selection, and its key right of P typed U+00F0 / U+00D0. Under FUTO the same
 keyboard showed "Default" (see above). Details in `testing.md`.
-
-The emulator's other keyboard, `qwerty2` (the one the console types through), shows "Automatic:
-English (US)" under Íslenska. That fits the hardware step: qwerty2 likely reports an English language
-tag. This is **unverified**, because `/vendor/usr/idc/qwerty2.idc` is not readable without root. So
-qwerty2 cannot demonstrate auto-selection by typing. Its manual selections can: with "Icelandic
-(corrected Ð)" selected under both languages, the key test passed with either subtype active.
 
 ## Implications
 
