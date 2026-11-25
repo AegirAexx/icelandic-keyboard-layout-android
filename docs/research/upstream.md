@@ -1,16 +1,39 @@
 # Upstream: reporting and fixing in AOSP
 
-**Status:** prior-art check done except the Issue Tracker (25.11.2026). No bug filed, no patch yet.
+**Status:** prior-art check done (25.11.2026); five Issue Tracker results still to be opened. No bug
+filed, no patch yet.
 
 ## 1. Check for existing reports
 
 - Search https://issuetracker.google.com for "Icelandic keyboard", "eth", "U+00F0", "keyboard_layout_icelandic".
-  **Not done:** the tracker is a JavaScript app with no public query API, and web search returned no
-  issuetracker.google.com results at all (which proves nothing). Needs a manual search by the user,
-  logged in.
+  Done by the user, logged in, on 25.11.2026 (the tracker has no public query API). See the Issue
+  Tracker findings below.
 - Search AOSP Gerrit (https://android-review.googlesource.com) for changes touching
   `keyboard_layout_icelandic.kcm`.
 - Record findings (links, dates, status) here.
+
+### Issue Tracker (searched by the user, 25.11.2026; seven screenshots)
+
+- **No result title describes this bug** (physical keyboard, Icelandic layout, `đ` instead of `ð`).
+  Searches and result counts: `Đ` 49, `U+0111` "many", `U+00F0` 34, `eth keyboard` 16,
+  `keyboard_layout_icelandic` 0, `icelandic layout` 21, `icelandic keyboard` 19. Status filters were
+  not recorded. Matching is fuzzy: `U+0111` returned mostly unrelated issues, so an empty or irrelevant
+  list is not proof of absence. This is judged from titles; no issue body was read.
+- **To open and read (titles only seen, bodies unread).** The Chromium-badged rows are Chromium, not
+  Android. These carry no badge, so they may be Android or something else; the component is unknown:
+  - 144652982, "Include missing ð anð Ð", Feature Request, Obsolete, 29.06.2021. Matched in three searches.
+  - 65338182, "Emulator doesn't support typing @ for icelandic keyboards", Bug, Obsolete, 08.11.2022.
+    Relevant to our emulator test procedure.
+  - 183408437, "Special characters not working with external keyboards while using TalkBack.", Bug,
+    Duplicate, 20.03.2023. Matched both `icelandic` searches, so the body mentions Icelandic.
+  - 264112020, "update", Bug, New, 22.06.2023. Matched both `icelandic` searches, body unknown.
+  - 516075789, "Đ", Bug, Infeasible, 25.05.2026. Matched `Đ`.
+- **Seen, judged unrelated by title (Chromium badge or other product):** 41005728 "FR: Icelandic
+  keyboard" (2013), 40307983 "Icelandic as an input method Chromebook" (2013), 40624456 "[more
+  locales] Need to support Icelandic locale", 40843551 "Impossible to type accented characters on
+  Icelandic keyboard into password field on Mac OS", 40093987 "Security: Idn-spoof with using U+00F0".
+  The two 2013 Chromebook issues concern ChromeOS input methods.
+- Record the result of reading the five issues here, and the issue ID and date if a bug is filed.
 
 ### Findings (25.11.2026)
 

@@ -4,19 +4,20 @@ Open tasks, tracked in git so they carry between machines (D-014). `HANDOFF.md` 
 session state; this file holds the shared task list. Mark a task done with the date and the PR or
 commit, then remove it once nothing refers to it.
 
-**Next up:** R-1's two manual searches, then R-8 (KCM audit), R-2 (upstream, started early because Gerrit
-review is slow) and R-3 (emulators). R-8 and R-3 need no physical device, and R-3 removes the main
-unknown before the first release (R-5).
+**Next up:** R-1's five Issue Tracker results to read, then R-2 (upstream, started early because Gerrit
+review is slow) and R-3 (emulators). R-3 needs no physical device and removes the main unknown before
+the first release (R-5). R-8 waits only on ÍST 125.
 
-## R-1 · Prior art and existing upstream reports (mostly done 25.11.2026)
+## R-1 · Prior art and existing upstream reports (almost done 25.11.2026)
 
-- **Done:** web and GitHub searches found no equivalent app; the Gerrit queries found no change aimed at
-  the file; AOSP `main` still has the bug and Icelandic is the only outlier among the 50 AOSP KCMs.
+- **Done:** web, GitHub, Google Play and F-Droid searches found no equivalent app; the Gerrit queries
+  found no change aimed at the file; the user's Issue Tracker searches show no result title that
+  matches; AOSP `main` still has the bug and Icelandic is the only outlier among the 50 AOSP KCMs.
   Findings in `research/publishing.md` §0 and `research/upstream.md` §1.
-- **Left, needs the user (logged in):** search https://issuetracker.google.com by hand for an existing
-  report ("Icelandic", "eth", "U+00F0", "keyboard_layout_icelandic", "Đ"). If one exists, R-2 becomes
-  "add to it". Also search Google Play directly for an equivalent app.
-- Remove this entry once those two searches are logged.
+- **Left (the user, logged in):** open five Issue Tracker results whose bodies are unread: 144652982,
+  65338182, 183408437, 264112020 and 516075789 (`research/upstream.md` §1). If one is this bug, R-2
+  becomes "add to it".
+- Remove this entry once those are read and logged.
 
 ## R-2 · Report the bug upstream and submit the patch
 
@@ -72,11 +73,11 @@ with it (procedure: `research/testing.md`):
 - TalkBack: announce the two tabs as tabs, via a platform `AccessibilityDelegate` (D-013).
 - Check Gboard's layout provider on the OnePlus's Gboard version for a second Icelandic layout.
 
-## R-8 · Key-by-key audit of the Icelandic KCM
+## R-8 · Key-by-key audit of the Icelandic KCM (done 25.11.2026 except ÍST 125)
 
-- Compare every key of AOSP's `keyboard_layout_icelandic.kcm` with the Icelandic standard layout
-  (ÍST 125; Windows and macOS Icelandic layouts) before filing the Gerrit patch (R-2) and before
-  v0.1.0 (R-5). The project claims the Ð/ð fix is the only behavioral change, and the upstream patch
-  should be complete.
-- Record the result in `research/kcm-diff.md` or a new `research/kcm-audit.md`, so one patch can carry
-  every correction.
+- **Done:** compared against Windows (ReactOS KBDIC) and Linux (xkeyboard-config). No second Ð/ð-style
+  error; three AltGr differences (D1 to D3), none clearly wrong. Result: `research/kcm-audit.md`.
+- **Left:** the standard itself, ÍST 125 (paid, Staðlaráð), and macOS Icelandic, were not read. Only
+  ÍST 125 can settle D1 to D3. If it disagrees with AOSP anywhere, add the correction to the Gerrit patch
+  (R-2) and the app. Optional: the user decides whether to buy it.
+- Remove this entry once ÍST 125 is checked or the user decides not to.

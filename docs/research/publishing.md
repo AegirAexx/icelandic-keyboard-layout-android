@@ -33,6 +33,8 @@ Record findings here with dates.
   `Viatorus/neo2-external-keyboard`, `alisabzevari/PersianHardwareKeyboard`, among others. They confirm
   the mechanism is established and give no reason to doubt D-001. Two of them,
   `ris58h/exkeymo` and `OctoNezd/OculusLayouts`, contain the uncorrected Icelandic KCM.
+- **Google Play and F-Droid, searched directly by the user on 25.11.2026:** nothing found that
+  addresses the ð problem. User-reported, no queries or screenshots kept.
 - Details of the upstream search: `upstream.md` §1.
 
 ## F-Droid (unverified)
