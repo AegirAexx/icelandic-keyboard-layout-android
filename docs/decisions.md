@@ -104,6 +104,8 @@ Append-only. Format: ID, date, decision, why, consequences. Supersede rather tha
 - **Consequences:** `keyboardLocale` / `keyboardLayoutType` are API 34+ and ignored on older versions
   (lint suppressed with `tools:targetApi`). Behavior below API 37 is **untested**. If a future dependency
   or AGP release needs a higher floor, raise it in a new decision.
+- **Update 25.11.2026:** emulator runs on API 16, 19, 22, 29, 33, 34 and 35 passed (`research/testing.md`),
+  so the floor holds and the "untested" statement above is outdated. D-017 has what is still unverified.
 
 ## D-011 · 24.11.2026 · Launcher activity with instructions and a key test
 
@@ -168,6 +170,9 @@ Append-only. Format: ID, date, decision, why, consequences. Supersede rather tha
   with a platform `AccessibilityDelegate` (API 19+) if needed. New and changed Icelandic strings need the user's proofreading. Verified on the OnePlus 12
   (API 36, dark, EN and IS) and the API 37 emulator (light). API 16–35 is untested, including the
   pre-API 30 insets path and the pre-API 23 and pre-API 21 color branches.
+- **Update 25.11.2026:** the pre-API 30 insets path and the pre-API 23 and pre-API 21 color branches
+  were run on emulators (API 29, 22, 19, 16) and render correctly, so the "untested" statement above
+  is outdated (`research/testing.md`). The setup steps do not yet fit Android 13 and older (R-4).
 
 ## D-014 · 25.11.2026 · Shared task list in `docs/roadmap.md`
 
@@ -204,3 +209,21 @@ Append-only. Format: ID, date, decision, why, consequences. Supersede rather tha
   The user judged chasing AltGr choices out of scope.
 - **Consequences:** the Gerrit patch (R-2) and the app contain only the Ð/ð change. If a user reports
   one of the three keys as wrong, reopen it as a separate, documented behavior change.
+
+## D-017 · 25.11.2026 · Accept real-device evidence for automatic selection on Android 14+; claim only what was verified
+
+- **Decision:** the README says automatic selection (D-012) is verified on Android 15, 16 and 17 and
+  **not verified on Android 14**. No test IME is built and no Gboard is sideloaded to close the gap.
+  The `minSdk 16` floor (D-010) stays. The setup text for Android 13 and older is fixed under R-4, not
+  here.
+- **Why:** the R-3 emulator runs (`research/testing.md`) showed that the Gboard preload on the API 34
+  image (12.4) registers no IME subtype for Icelandic, so there is no `is-IS` subtype to match against.
+  The API 35 emulator (Gboard 14.2) does register one and auto-selects our layout after a plain
+  install, which agrees with the two real devices on API 36. Closing the gap would need a Play Store
+  sign-in, a Gboard APK from a third party, or a custom test IME: all more cost and risk than the claim
+  is worth. The user chose to accept the existing evidence.
+- **Consequences:** Android 14 users may have to select the layout by hand, as the instructions
+  already say. Anyone with an Android 14 device and a current Gboard can close the gap with a device
+  report. Before API 34 there is no per-language selection at all; on API 16–33 the layout has to be
+  enabled and the built-in "Icelandic" switched off (both verified on emulators). The `setup_note`
+  does not say that yet (R-4).

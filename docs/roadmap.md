@@ -4,10 +4,14 @@ Open tasks, tracked in git so they carry between machines (D-014). `HANDOFF.md` 
 session state; this file holds the shared task list. Mark a task done with the date and the PR or
 commit, then remove it once nothing refers to it.
 
-**Next up:** R-2 (upstream, started early because the path to a public fix is slow) and R-3 (emulators). R-3
-needs no physical device and removes the main unknown before the first release (R-5).
+**Next up:** R-2 (upstream, started early because the path to a public fix is slow) and R-4 (setup text,
+which needs the user's Icelandic proofreading). R-5 (the first release) follows.
 
 Done 25.11.2026, no longer tasks:
+- Emulator tests below Android 16 (the former R-3): API 35, 34, 33, 29, 22, 19 and 16 all pass, so
+  `minSdk 16` holds. Automatic selection (D-012) is verified on API 35; Android 14 is not verifiable on
+  the emulator's Gboard and is stated as unverified (D-017). Results and findings in
+  `research/testing.md`.
 - Prior-art check (the former R-1): no equivalent app, no Gerrit change and no Issue Tracker report
   found; AOSP `main` still has the bug and Icelandic is the only outlier among its 50 KCMs. Findings
   in `research/publishing.md` §0 and `research/upstream.md` §1.
@@ -33,26 +37,20 @@ Done 25.11.2026, no longer tasks:
   claim is for the user's own contract to answer; it hasn't been researched.
 - Start early: the path from a proposal to a public fix is slow.
 
-## R-3 · Emulator tests below Android 16
-
-Only API 36 (two devices) and API 37 (emulator) have run. On emulators, without the app and then
-with it (procedure: `research/testing.md`):
-
-- **API 34 and 35:** does Gboard's `is-IS` subtype auto-select our layout (D-012)? The README promises
-  this for Android 14+.
-- **API 33 and lower (e.g. 33, 30, 26, 21, 16):** the layout is listed and selectable, the key types
-  U+00F0 / U+00D0, and the app's setup text matches the settings screens (no per-language entries
-  before API 34). Check that the receiver works on a first install without launching the app.
-- **App UI branches from D-013:** the pre-API 30 insets path and the pre-API 23 and pre-API 21 color
-  branches.
-- Update the README Status table and `research/testing.md` with the results.
-
-## R-4 · Setup text for MagicOS, and an OxygenOS doc note
+## R-4 · Setup text for MagicOS and Android 13 and older, and an OxygenOS doc note
 
 - `setup_note` (EN and IS) says to look for "Physical keyboard" in the keyboard or language settings.
   On MagicOS it is under System & updates → "Looking for other settings?", and only while a keyboard
   is connected (`research/testing.md`). Reword it. New Icelandic wording needs the user's
   proofreading.
+- **Android 13 and older** (found in R-3, verified on emulators for API 16, 19, 22, 29 and 33): step 2
+  ("add Icelandic to the languages of your on-screen keyboard") and step 5 ("Select ... under each
+  one") don't fit; step 4 already limits "choose a language" to Android 14+. Before API 34 the user must
+  *enable* "Icelandic (corrected Ð)" under "Set up keyboard layouts" and *switch off* the built-in
+  "Icelandic", or the built-in one stays active. The README now says so; the app text does not. Also
+  decide whether the app can tell the Android version and show the matching steps (a runtime branch on
+  `Build.VERSION.SDK_INT`, no new dependency). Not tested: whether Control-Spacebar switches between
+  two enabled layouts.
 - Add to `research/testing.md`: OxygenOS offers no Icelandic system language, so on OnePlus the app can
   be Icelandic (per-app language) while the Settings menus stay English.
 
@@ -61,7 +59,8 @@ with it (procedure: `research/testing.md`):
 - Release keystore outside the repo. The user decides where it lives and how it is backed up: a lost
   key means existing installs can't be updated.
 - Signed build, GitHub Release with the APK, CHANGELOG entry.
-- After R-3, so the first release makes no untested claims.
+- After R-4, so the first release's setup text fits the Android versions it supports. R-3 is done and
+  the README states what is still unverified (Android 14 auto-selection, Samsung, Bluetooth).
 - Decide the distribution channel first: GitHub, F-Droid and Google Play sign differently, so a user
   can't switch channel without uninstalling.
 - Installs of the debug build must be uninstalled first (different signature), which resets manual
