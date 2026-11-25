@@ -6,7 +6,8 @@ What the project is lives in `CONTEXT.md`, and where it stands lives in `HANDOFF
 ## Start of every session
 
 1. Read `CONTEXT.md` for the problem, root cause and chosen approach.
-2. Read `HANDOFF.md` for current state, next steps and open questions.
+2. Read `HANDOFF.md` for current state, next steps and open questions, and `docs/roadmap.md` for the
+   shared task list.
 3. Read only the `docs/` files relevant to the task at hand (index below).
 
 ## End of every session (mandatory)
@@ -15,6 +16,8 @@ What the project is lives in `CONTEXT.md`, and where it stands lives in `HANDOFF
   It is **gitignored** (local-only, D-004). If it is missing, recreate it from `CONTEXT.md`,
   `docs/decisions.md` and `git log`.
 - Commit the tracked doc changes. Never push without explicit user approval.
+- Update `docs/roadmap.md` when tasks are added, finished or reprioritized. It is tracked and shared
+  between machines; `HANDOFF.md` is not.
 - Record any new non-trivial decision in `docs/decisions.md` (append-only, numbered).
 - Put new research and findings in `docs/research/`, not in the root files.
 - Correct any doc that turned out wrong. Don't leave stale statements behind.
@@ -63,3 +66,4 @@ stays machine-agnostic.
 | `docs/research/upstream.md` | Plan for reporting and patching the bug in AOSP |
 | `docs/research/publishing.md` | Prior art check, F-Droid and Google Play notes, application ID |
 | `docs/decisions.md` | Numbered decision log |
+| `docs/roadmap.md` | Shared open-task list (R-n), carried between machines |
