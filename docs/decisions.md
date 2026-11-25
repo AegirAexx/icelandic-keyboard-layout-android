@@ -168,3 +168,14 @@ Append-only. Format: ID, date, decision, why, consequences. Supersede rather tha
   with a platform `AccessibilityDelegate` (API 19+) if needed. New and changed Icelandic strings need the user's proofreading. Verified on the OnePlus 12
   (API 36, dark, EN and IS) and the API 37 emulator (light). API 16–35 is untested, including the
   pre-API 30 insets path and the pre-API 23 and pre-API 21 color branches.
+
+## D-014 · 25.11.2026 · Shared task list in `docs/roadmap.md`
+
+- **Decision:** open tasks live in a tracked `docs/roadmap.md`, numbered R-n, with a "Next up" line.
+  `HANDOFF.md` keeps per-machine session state and points to it.
+- **Why:** the user works from more than one machine and wants the task list to carry between them.
+  `HANDOFF.md` is gitignored (D-004), and `CONTEXT.md` is for stable facts, not volatile tasks.
+  GitHub Issues would also carry, but they are public and outward-facing, and a file keeps the agent's
+  start-of-session reading in one place.
+- **Consequences:** the roadmap must be updated and committed when tasks change (CLAUDE.md, end of
+  session). It stays machine-agnostic: which machine takes which task is not recorded there.
