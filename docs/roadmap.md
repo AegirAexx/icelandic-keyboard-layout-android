@@ -19,8 +19,13 @@ KCMs. Findings in `research/publishing.md` §0 and `research/upstream.md` §1.
 - If ÍST 125 (R-8) turns up more corrections, one patch should carry them all, but don't hold the bug
   report for it.
 - Gerrit needs the user's personal Google account and an individual contributor agreement.
-- Before relying on a quick merge, find out how the public AOSP `main` is updated and how external
-  changes reach it. Its latest commit was dated 26.03.2025 when read (`research/upstream.md` §1).
+- **Target branch is `android17-release`** (the `android-latest-release` manifest), not `aosp-main`,
+  which is read-only. The bug is present there. Google reviews and cherry-picks accepted changes into
+  its internal tree, and the public repo gets them only with a Q2 or Q4 source drop
+  (`research/upstream.md` §3 and §4). Expect a long timeline and no quick public merge.
+- Open points before the patch: the Gerrit/`repo` setup (the docs describe `repo` only; plain Git is
+  **unverified**), where to file (Android Public Tracker, component "Framework"), and signing the
+  Individual CLA with a personal Google account.
 - Start early: the upstream review takes a long time.
 
 ## R-3 · Emulator tests below Android 16

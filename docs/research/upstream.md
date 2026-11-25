@@ -47,11 +47,13 @@ yet.
   (`https://android.googlesource.com/platform/frameworks/base/+/1cdfff555f4a21f71ccc978290e2e212e2f8b168/packages/InputDevices/res/raw/keyboard_layout_icelandic.kcm`)
   has `LEFT_BRACKET` as `Đ` / `đ` on all four lines (`label`, `base`, `shift, capslock`,
   `shift+capslock`).
-- **The public `main` may lag behind Google's development (observed, cause unverified).** That commit's
-  committer date is 26.03.2025, about eight months before the date it was read. `platform/frameworks/native`
-  `main` was at `4f463a6b1de9198963dc6aff74154a504ba3f8f6`, dated 25.03.2025, the same week. Find out
-  how the public branch is updated now and how external Gerrit changes reach it before counting on a
-  quick merge (R-2).
+- **The public `main` is frozen, and the bug is on the branches that matter (verified 25.11.2026).**
+  The `main` commit above is dated 26.03.2025, and `platform/frameworks/native` `main`
+  (`4f463a6b1de9198963dc6aff74154a504ba3f8f6`) is dated 25.03.2025. This fits §4 below: `aosp-main` is
+  read-only. That the googlesource `main` ref is the branch the docs call `aosp-main` is an inference
+  from the matching dates, not checked in the manifest. The same file still has the bug on `android17-release` (`94b4c163b7dfe5ce3607f7bb8456f9573f7de57d`,
+  committer date 21.05.2026) and `android16-release` (`99b01a65cc4c104933788b3143285ab6bae65827`,
+  07.05.2025), checked on 25.11.2026 (`LEFT_BRACKET` is `Đ` / `đ`).
 - **Icelandic is the only outlier (verified).** Scanned all 50 `.kcm` files in that directory for
   U+0110, U+0111, U+00D0, U+00F0 and the literal letters. `Đ/đ` on a base key appears only in the
   Croatian/Slovenian and Serbian/Montenegrin Latin layouts, where it is correct, and in Icelandic, where
@@ -91,10 +93,66 @@ Include:
 
 ## 3. Submit a patch (AOSP Gerrit)
 
-- Requires a Google account plus a signed Contributor License Agreement.
+- Requires a Google account plus a signed Contributor License Agreement: the **Individual** CLA when
+  contributing on your own behalf, or the Corporate CLA if your employer has signed one authorizing you
+  (submit-patches page). This is a personal project on a personal account, so use a personal Google
+  account and the Individual CLA. Whether an employer could have a claim is a question for the
+  contributor's own contract (**unverified**, not researched).
 - Change: four lines in `keyboard_layout_icelandic.kcm` (`Đ` → `Ð`, `đ` → `ð`).
+- **Target branch: the `android-latest-release` manifest's branch, currently `android17-release`** (§4).
+  Not `aosp-main`, which is read-only.
 - Reference the Issue Tracker bug ID in the commit message (`Bug: <id>`).
 - Guide: https://source.android.com/docs/setup/contribute/submit-patches
+- How to get the code, per the docs: `repo init --partial-clone --no-use-superproject -b android-latest-release
+  -u https://android.googlesource.com/platform/manifest`, then `repo sync`, `repo start`, commit,
+  `repo upload` (the upload prompt shows the remote branch, e.g. `android17-release`). The FAQ also
+  allows plain Git: propose to the manifest's default revision branch. A full `repo sync` is very
+  large. A partial `git clone --filter=blob:none` of `platform/frameworks/base` on that branch plus a push
+  to `refs/for/<branch>` is the usual Gerrit way, but the AOSP docs describe only the `repo` route
+  (**unverified** here: Gerrit authentication, the `Change-Id` commit hook, and whether the plain-Git
+  route is accepted in practice).
+- Every change needs review by the code owners (`find-owners`, "SUGGEST OWNERS" in Gerrit).
+
+## 4. How external changes reach AOSP now (verified 25.11.2026)
+
+Read on 25.11.2026 from https://source.android.com/docs/setup/contribute/submit-patches,
+https://source.android.com/docs/setup/contribute/release-lifecycle (last updated 15.04.2025 per the
+page),
+https://source.android.com/docs/setup/about/faqs#android-latest-release and
+https://source.android.com/docs/whatsnew/site-updates.
+
+- **Q2/Q4 publication, from 2026.** The site banner: "Effective in 2026, to align with our trunk stable
+  development model and ensure platform stability for the ecosystem, we will publish source code to AOSP
+  in Q2 and Q4. For building and contributing to AOSP, use android-latest-release. The
+  android-latest-release manifest branch will always reference the most recent release pushed to AOSP."
+- **`aosp-main` is read-only.** FAQ: "Why can't I submit to aosp-main? You can't submit to aosp-main
+  because that branch is now read-only." and "You should propose new changes to android-latest-release
+  (when using Repo) or to the default revision branch specified in the android-latest-release manifest
+  (when using Git directly). ... The default revision branch is not android-latest-release."
+- **The current branch is `android17-release`.** Site updates: "Starting March 27, 2025, the latest
+  release branch will always be referenced by the new android-latest-release manifest ... The
+  android-latest-release manifest is set to the latest AOSP release branch, android17-release." The
+  page also mentions "Android 17 (26Q2)".
+- **What happens to a proposal (release lifecycle page):** "External contributors can download and
+  modify the latest release branch for their device, as well as propose code changes for the next
+  version of AOSP on this branch." "Google reviews and, if accepted, cherrypicks proposed changes on
+  the latest release branch into Google's internal development branch. ... Periodically, an internal
+  release branch is created from the internal development branch. ... At some point, Google pushes code
+  from the internal release branch to the latest release branch ... to create a read-only copy of a
+  release branch on the public AOSP host."
+- **Consequence for this project (inference, unverified):** an accepted fix is cherry-picked into Google's
+  internal tree and reaches the public repository only with a later source drop (Q2 or Q4). It could
+  then ship in a future Android release, and reach devices only through OEM updates. The Gerrit change
+  itself may never show as an ordinary merge on the public branch. Expect a long timeline and no quick
+  public confirmation. The sideloadable app (D-001) remains the only fix users can get soon.
+- **Bugs:** https://source.android.com/docs/setup/contribute/report-bugs says to search open and closed
+  bugs, star an existing one, and otherwise file a new one in a component under the **Android Public
+  Tracker**. The platform list includes "Framework" (and "Text", "System", "Accessibility", among
+  others). Whether an "Input" component exists was not checked, so file under "Framework" unless the
+  tracker offers a better one. The page also says: "The amount of detail that you provide, including log
+  files and even a patch set, helps Google address your issue."
+- **Not found:** how long Google takes to review external changes, and how many external changes get
+  accepted. The docs don't say.
 
 ## Log
 
