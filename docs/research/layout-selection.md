@@ -23,7 +23,8 @@ Sources:
    (verified, source and emulator). Users must select ours by hand under every language they use.
 3. **Adding `is-IS` to our `keyboardLocale` makes ours win** for Gboard's `is-IS` subtype (verified on
    the emulator, clean install, with a control; confirmed on a OnePlus 12, API 36, with a keyboard new to
-   the phone). Applied in D-012 as `is-IS,is-Latn`. It does not help IMEs whose subtype has no language
+   the phone, and on an Honor MagicPad 2, API 36, where installing switched an already-connected
+   keyboard). Applied in D-012 as `is-IS,is-Latn`. It does not help IMEs whose subtype has no language
    tag, such as FUTO (verified on the same phone).
 4. **Gboard switches its subtype to match the focused app's locale** (verified on the emulator). This
    explains the earlier per-app locale finding in `testing.md`.
@@ -195,10 +196,47 @@ under it.
 ```
 
 An in-place update (`adb install -r`, or a store update) keeps our descriptor, so a changed
-`keyboardLocale` does not take effect for layouts already auto-selected until the cache is rebuilt.
-A clean install, an uninstall of any provider, or a reboot rebuilds it (the reboot case is
+`keyboardLocale` does not take effect for layouts already auto-selected until the cache is cleared.
+A clean install, an uninstall of any provider, or a reboot clears it (the reboot case is
 **unverified**, but the cache is in memory only). Uninstalling also removes stored user selections of
-our layout (`removeUninstalledKeyboardLayouts`).
+our layout (`removeUninstalledKeyboardLayouts`). After clearing, the cache is refilled lazily on the
+next lookup (`mKeyboardLayoutCache.put(layoutKey, result)` in `getKeyboardLayoutForInputDeviceInternal`).
+
+Package changes reach `updateKeyboardLayouts()` through a receiver registered in `systemRunning()`
+(verbatim from `android16-release`, read 25.11.2026,
+https://android.googlesource.com/platform/frameworks/base/+/refs/heads/android16-release/services/core/java/com/android/server/input/KeyboardLayoutManager.java):
+
+```java
+        IntentFilter filter = new IntentFilter(Intent.ACTION_PACKAGE_ADDED);
+        filter.addAction(Intent.ACTION_PACKAGE_REMOVED);
+        filter.addAction(Intent.ACTION_PACKAGE_CHANGED);
+        filter.addAction(Intent.ACTION_PACKAGE_REPLACED);
+        filter.addDataScheme("package");
+        mContext.registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                updateKeyboardLayouts();
+            }
+        }, filter, null, mHandler);
+```
+
+and, after the early return quoted above, `updateKeyboardLayouts()` clears the cache and reloads:
+
+```java
+        synchronized (mKeyboardLayoutCache) {
+            // Invalidate the cache: With packages being installed/removed, existing cache of
+            // auto-selected layout might not be the best layouts anymore.
+            mKeyboardLayoutCache.clear();
+        }
+
+        // Reload keyboard layouts.
+        reloadKeyboardLayouts();
+```
+
+The early return, the cache clear and the user-selection-first order in
+`getKeyboardLayoutForInputDeviceInternal` are the same in `android16-release` as in the `main`
+revision quoted above (checked 25.11.2026). A global device override
+(`setKeyboardLayoutOverrideForInputDevice`) also wins over the cache.
 
 ## Real device result (OnePlus 12, OxygenOS 16, API 36, 24.11.2026)
 
@@ -206,6 +244,16 @@ D-012 holds on real hardware. A Ducky USB keyboard that had never been connected
 reports no language of its own, showed "Automatic: Icelandic (corrected Ð)" under Gboard Íslenska
 (Ísland) with no manual selection, and its key right of P typed U+00F0 / U+00D0. Under FUTO the same
 keyboard showed "Default" (see above). Details in `testing.md`.
+
+## Real device result (Honor MagicPad 2, MagicOS 10, API 36, 25.11.2026)
+
+D-012 holds on a second device. The same Ducky, new to the tablet, was auto-set to stock "Icelandic"
+under Gboard Íslenska (`is-IS`) before install. Installing the app, with the keyboard still connected,
+switched it to "Icelandic (corrected Ð)" with no user step. That is consistent with the source above:
+the install broadcast changes the set of layouts, which clears the cache. A Bluetooth keyboard that,
+by the owner's account, had been set to stock "Icelandic" by hand kept it after install, consistent with
+a stored user selection being read first, and needed a manual selection. That case is not an
+independent confirmation: the manual choice is user-reported. Details in `testing.md`.
 
 ## Implications
 
