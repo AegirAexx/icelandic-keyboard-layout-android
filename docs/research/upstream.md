@@ -45,8 +45,10 @@ filed, no patch yet.
   has `LEFT_BRACKET` as `Đ` / `đ` on all four lines (`label`, `base`, `shift, capslock`,
   `shift+capslock`).
 - **The public `main` may lag behind Google's development (observed, cause unverified).** That commit's
-  committer date is 26.03.2025, about eight months before the date it was read. Find out how the public
-  branch is updated now and how external Gerrit changes reach it before counting on a quick merge (R-2).
+  committer date is 26.03.2025, about eight months before the date it was read. `platform/frameworks/native`
+  `main` was at `4f463a6b1de9198963dc6aff74154a504ba3f8f6`, dated 25.03.2025, the same week. Find out
+  how the public branch is updated now and how external Gerrit changes reach it before counting on a
+  quick merge (R-2).
 - **Icelandic is the only outlier (verified).** Scanned all 50 `.kcm` files in that directory for
   U+0110, U+0111, U+00D0, U+00F0 and the literal letters. `Đ/đ` on a base key appears only in the
   Croatian/Slovenian and Serbian/Montenegrin Latin layouts, where it is correct, and in Icelandic, where
