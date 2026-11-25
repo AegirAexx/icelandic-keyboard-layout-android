@@ -43,8 +43,9 @@ Done 25.11.2026, no longer tasks:
   On MagicOS it is under System & updates → "Looking for other settings?", and only while a keyboard
   is connected (`research/testing.md`). Reword it. New Icelandic wording needs the user's
   proofreading.
-- **Android 13 and older** (found in R-3, verified on API 16–33 emulators): the steps say "choose a
-  language" (step 4, an Android 14+ concept) and "Select ..." (step 5). Before API 34 the user must
+- **Android 13 and older** (found in R-3, verified on emulators for API 16, 19, 22, 29 and 33): step 2
+  ("add Icelandic to the languages of your on-screen keyboard") and step 5 ("Select ... under each
+  one") don't fit; step 4 already limits "choose a language" to Android 14+. Before API 34 the user must
   *enable* "Icelandic (corrected Ð)" under "Set up keyboard layouts" and *switch off* the built-in
   "Icelandic", or the built-in one stays active. The README now says so; the app text does not. Also
   decide whether the app can tell the Android version and show the matching steps (a runtime branch on

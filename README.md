@@ -48,7 +48,7 @@ Tested with the debug build:
 | Honor MagicPad 2, MagicOS 10 | 16 | USB, Bluetooth | Works. Picked automatically for a new USB keyboard; selected by hand for a Bluetooth keyboard that had been set up before. |
 | Emulator | 17 | built-in | Works. Picked automatically under Gboard Icelandic. |
 | Emulator | 15 | built-in | Works. Picked automatically under Gboard Icelandic. |
-| Emulator | 14 | built-in | Works when selected by hand. Automatic selection could not be tested (the emulator's Gboard has no Icelandic language entry for Android to match). |
+| Emulator | 14 | built-in | Works when selected by hand. Automatic selection could not be tested (the emulator's Gboard does not register an Icelandic subtype with Android, so there is nothing to match). |
 | Emulators | 13, 10, 5.1, 4.4, 4.1 | built-in | Works when selected by hand (see [Android 13 and older](#android-13-and-older)). Android has no automatic choice there. |
 
 Not tested yet: automatic selection on Android 14, Samsung and other manufacturers, automatic
@@ -69,9 +69,10 @@ Until then, you can [build it from source](#building-from-source).
 Open the app. The **Set up** tab explains the setup and opens the physical keyboard settings. The
 **Test** tab checks the key right of `P` and shows whether it types `ð` (fixed) or `đ` (stock layout).
 
-First add Icelandic to the languages of your on-screen keyboard (for example in Gboard's settings).
-Without it, there is no Icelandic entry to select the layout under, and Android can't pick it
-automatically.
+On Android 14 and later, first add Icelandic to the languages of your on-screen keyboard (for example
+in Gboard's settings). Without it, there is no Icelandic entry to select the layout under, and Android
+can't pick it automatically. Android 13 and older have no per-language entries: see
+[Android 13 and older](#android-13-and-older).
 
 On Android 14 and later, the layout is stored **per keyboard and per language** of your on-screen
 keyboard. If you use more than one language (for example Icelandic and English in Gboard), select the
@@ -106,8 +107,9 @@ Verified on an Honor MagicPad 2, Android 16, with USB and Bluetooth keyboards.
 
 ### Android 13 and older
 
-Verified on emulators (Android 13, 10, 5.1, 4.4 and 4.1) with the stock Android settings. Phones from
-other manufacturers may word the menus differently.
+Verified on emulators running Android 13, 10, 5.1, 4.4 and 4.1, with the stock Android settings. The
+versions in between are expected to behave the same but were not run. Phones from other manufacturers
+may word the menus differently.
 
 1. Connect the keyboard.
 2. In the app, tap **Open keyboard settings**. On Android 10 and 13 it opens the "Physical keyboard"
@@ -117,7 +119,7 @@ other manufacturers may word the menus differently.
 4. Switch on **Icelandic (corrected Ð)** and switch **off** the built-in **Icelandic**. If both are on,
    Android keeps using the built-in one and the key still types `đ`.
 
-Other manufacturers and Android versions will be added as they are tested.
+Other manufacturers will be added as they are tested.
 
 ## Known limitations
 
@@ -125,7 +127,7 @@ Other manufacturers and Android versions will be added as they are tested.
   try to fix the ð, Android keeps that choice. Select **Icelandic (corrected Ð)** by hand.
 - **Automatic selection needs Android 14+ and an Icelandic language in the on-screen keyboard.**
   Verified with Gboard on Android 15, 16 and 17. Not verified on Android 14: the Gboard that the
-  emulator ships does not expose Icelandic as a language to Android. Keyboards that switch languages
+  emulator ships does not register an Icelandic subtype with Android. Keyboards that switch languages
   internally, such as FUTO, show up by name instead of a language, and the layout must be selected by
   hand. Samsung Keyboard and SwiftKey are untested.
 - **On Android 13 and older the built-in "Icelandic" must be switched off.** Android has no automatic

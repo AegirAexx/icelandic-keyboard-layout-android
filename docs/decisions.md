@@ -168,9 +168,11 @@ Append-only. Format: ID, date, decision, why, consequences. Supersede rather tha
 - **Consequences:** the tab indicator color is `colorAccent` on API 21+ and `textColorPrimary` below,
   resolved in code. TalkBack announces the tabs as selected or not, but not as tabs. A role description could be added
   with a platform `AccessibilityDelegate` (API 19+) if needed. New and changed Icelandic strings need the user's proofreading. Verified on the OnePlus 12
-  (API 36, dark, EN and IS) and the API 37 emulator (light). *Update 25.11.2026:* the pre-API 30 insets
-  path and the pre-API 23 and pre-API 21 color branches were run on emulators (API 29, 22, 19, 16) and
-  render correctly (`research/testing.md`). The setup steps do not yet fit Android 13 and older (R-4).
+  (API 36, dark, EN and IS) and the API 37 emulator (light). API 16–35 is untested, including the
+  pre-API 30 insets path and the pre-API 23 and pre-API 21 color branches.
+- **Update 25.11.2026:** the pre-API 30 insets path and the pre-API 23 and pre-API 21 color branches
+  were run on emulators (API 29, 22, 19, 16) and render correctly, so the "untested" statement above
+  is outdated (`research/testing.md`). The setup steps do not yet fit Android 13 and older (R-4).
 
 ## D-014 · 25.11.2026 · Shared task list in `docs/roadmap.md`
 

@@ -28,9 +28,9 @@ a time, from a fresh AVD each (`google_apis_playstore` x86_64 images, `google_ap
 |---|---|---|---|
 | 25.11.2026 | 15 (API 35) | `AE3A.240806.036`, Gboard 14.2 preload | **Pass, including auto-selection (D-012).** Icelandic added in Gboard's languages gives an `is-IS` subtype. Before install: "Automatic: Icelandic", `x[{y` types U+0111 U+0110. After `adb install`, no manual choice, app never launched: Íslenska (Ísland) shows "Automatic: Icelandic (corrected Ð)" and the keys type U+00F0 U+00D0; English (US) stays "Automatic: English (US)". App: both tabs, "Correct" on the Test tab, settings button opens `Settings$PhysicalKeyboardActivity`, edge-to-edge in portrait and landscape, dark, app locale is-IS ("Uppsetning" / "Prófun"). |
 | 25.11.2026 | 14 (API 34) | `UE1A.230829.036.A4`, Gboard 12.4 preload | **Pass by manual selection; auto-selection not testable on this image.** Stock "Icelandic": U+0111 U+0110. "Icelandic (corrected Ð)" picked under "Multilingual typing": U+00F0 U+00D0. This Gboard registers no IME subtype for Icelandic (see findings), so there is no `is-IS` subtype to test D-012 against. Receiver listed right after install. App UI pass not run. |
-| 25.11.2026 | 13 (API 33) | `TE1A.240213.009`, Gboard 12.4 preload | **Pass (manual).** Stock U+0111 U+0110; stock and ours both enabled: still stock; ours only: U+00F0 U+00D0. App pass (tabs, Test tab, settings button, app locale is-IS) OK; Set up tab screenshot read. Dark mode toggled, screenshot not read. |
-| 25.11.2026 | 10 (API 29) | `QSR1.211112.011`, Gboard 8.0 preload | **Pass (manual).** Same as API 33. Pre-API 30 insets path: opaque status bar, nothing under it. Dark mode not exercised. |
-| 25.11.2026 | 5.1.1 (API 22) | `LMY48X` (`google_apis` x86_64) | **Pass (manual).** Test tab: stock đ/Đ, both enabled still đ/Đ, ours only ð/Ð. `ACTION_HARD_KEYBOARD_SETTINGS` does not resolve; the button falls back to "Language & input" without a crash. Pre-API 23 `colorAccent` branch renders. |
+| 25.11.2026 | 13 (API 33) | `TE1A.240213.009`, Gboard 12.4 preload | **Pass (manual).** Stock U+0111 U+0110; stock and ours both enabled: still stock; ours only: U+00F0 U+00D0. App pass (tabs, Test tab, app locale is-IS) OK; the settings button opens `Settings$PhysicalKeyboardActivity`; Set up tab screenshot read. Dark mode toggled, screenshot not read. |
+| 25.11.2026 | 10 (API 29) | `QSR1.211112.011`, Gboard 8.0 preload | **Pass (manual).** Same as API 33, and the settings button opens `Settings$PhysicalKeyboardActivity`. Pre-API 30 insets path: opaque status bar, nothing under it. Dark mode not exercised. |
+| 25.11.2026 | 5.1.1 (API 22) | `LMY48X` (`google_apis` x86_64) | **Pass (manual).** Test tab: stock đ/Đ, both enabled still đ/Đ, ours only ð/Ð. `ACTION_HARD_KEYBOARD_SETTINGS` does not resolve and the app doesn't send it below API 24; the button opens "Language & input" without a crash. Pre-API 23 `colorAccent` branch renders. |
 | 25.11.2026 | 4.4.2 (API 19) | `KK 6761301` (`google_apis` x86) | **Pass (manual).** Same as API 22. Launches with no errors; pre-API 21 plain text color, black tab indicator. |
 | 25.11.2026 | 4.1.2 (API 16) | `eng.wdu.20191213.040452` (`google_apis` x86) | **Pass (manual).** Same as API 22. `minSdk 16` holds. |
 
@@ -200,7 +200,8 @@ settings path per device and OEM, since it feeds the user instructions (D-001).
 All **verified** on the emulators listed in the results table unless marked otherwise.
 
 - **The receiver is registered right after `adb install`, with the app never launched, on every API
-  from 16 to 35** (`cmd package query-receivers` on API 24+, `dumpsys package` on older images).
+  tested** (16, 19, 22, 29, 33, 34 and 35; `cmd package query-receivers` on API 24+, `dumpsys package`
+  on older images).
 - **Gboard's Icelandic support differs by image.** The preload on API 35 (14.2) creates an `is-IS` IME
   subtype when Icelandic is added under Languages → ADD KEYBOARD, so Settings gets one entry per
   subtype and D-012 works as on the real devices. The preload on API 34 (12.4) does not: after adding
@@ -217,10 +218,15 @@ All **verified** on the emulators listed in the results table unless marked othe
 - **Pre-14, enabling ours next to the built-in "Icelandic" does not fix the key.** With both enabled the
   built-in one stayed active (đ/Đ). Only with the built-in one switched off did the key type ð/Ð.
   Whether Control-Spacebar switches between them was **not tested** (`adb` can't send it easily). The
-  app's setup text (step 4 "choose a language", step 5 "Select ...") does not describe this; see R-4.
-- **`ACTION_HARD_KEYBOARD_SETTINGS` does not resolve on API 22, 19 and 16** (expected below API 24). The
-  settings button falls back to `ACTION_INPUT_METHOD_SETTINGS`: "Language & input" with a "Physical
-  keyboard" section that lists the keyboard, which fits the setup note. No crash.
+  app's setup text (step 2 "add Icelandic to the languages of your on-screen keyboard", step 5 "Select
+  ... under each one") does not describe this; see R-4. Step 4 already limits "choose a language" to
+  Android 14 and later.
+- **`ACTION_HARD_KEYBOARD_SETTINGS` does not resolve on API 22** (launched by hand with `am start`:
+  "unable to resolve Intent"; expected below API 24). The app never sends it below API 24
+  (`MainActivity.kt`, `openKeyboardSettings`), so on API 22, 19 and 16 the button opens
+  `ACTION_INPUT_METHOD_SETTINGS` first: "Language & input" with a "Physical keyboard" section that lists
+  the keyboard, which fits the setup note. On API 29 and 33 the button opens
+  `Settings$PhysicalKeyboardActivity`. Not tested: API 23 to 28 and 30 to 32.
 - **UI branches** (screenshots read): API 29 and older draw the opaque system status bar and start
   the content below it, nothing under it when scrolled; the tab indicator is the theme accent on API
   22–33 and black on API 19 and 16 (no `colorAccent` below API 21, as D-013 describes); API 22 and
