@@ -43,8 +43,8 @@ Open the app. The **Set up** tab explains the setup and opens the physical keybo
 
 If your on-screen keyboard is Gboard with Icelandic enabled, Android 14 and later usually pick the
 corrected layout automatically for a keyboard you have not set up before (verified on Android 16 and
-17). It does not replace a layout you already picked by hand, and keyboards that report their own
-language may get a different one. Check with the **Test** tab, and if it is not right, select
+17). It does not replace a layout you already picked by hand, for example if you chose "Icelandic"
+earlier to try to fix the ð. Keyboards that report their own language may get a different one. Check with the **Test** tab, and if it is not right, select
 **Icelandic (corrected Ð)** by hand.
 
 ### OnePlus (OxygenOS 16)
@@ -59,6 +59,19 @@ Verified on a OnePlus 12, Android 16.
    layout" one per language (e.g. "Íslenska (Ísland)"), under "FUTO Keyboard layout" a single
    "FUTO Keyboard".
 5. Open each entry you use and select **Icelandic (corrected Ð)**.
+
+### Honor (MagicOS 10)
+
+Verified on an Honor MagicPad 2, Android 16, with USB and Bluetooth keyboards.
+
+1. Connect the keyboard. With a USB keyboard, MagicOS may ask whether to enable PC mode. You can
+   cancel.
+2. In the app, tap **Open keyboard settings**. By hand: Settings → System & updates → at the bottom,
+   under "Looking for other settings?", **Physical keyboard**. That link only shows while a keyboard is
+   connected.
+3. Tap your keyboard's layout entry (e.g. "Gboard, Icelandic"). It lists one entry per language of your
+   on-screen keyboard.
+4. Open each language you use and select **Icelandic (corrected Ð)**.
 
 Other manufacturers and Android versions will be added as they are tested.
 

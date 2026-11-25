@@ -16,8 +16,12 @@ How the layout was verified, and how to repeat it. Results are listed per device
 | 24.11.2026 | Same phone, both keyboards | 16 (API 36) | debug, v0.1.0 at `d80dfd5` | **Pass.** In-app key test: Preonic (ours selected) reports Ð U+00D0 as correct; Ducky under FUTO ("Default") reports `[` U+005B with the "not an Icelandic layout" message. Button opens `Settings$PhysicalKeyboardActivity`. **Bug:** scrolled content draws under the status bar. |
 | 25.11.2026 | OnePlus 12, Ducky (FUTO, "Default"); API 37 emulator | 16 (API 36); 17 (API 37) | debug, tabbed UI (D-013) | **Pass.** No text under the status bar when scrolled; bottom padding present. Returning from the settings button opens "Test". Pressing the key on "Set up" switches to "Test" and shows `[` U+005B. The selected tab survives recreation (app locale change). IS labels fit. Light theme checked on the emulator, dark on the phone. Lint clean. |
 
-Not yet tested: API 16–35 (only API 36 on the OnePlus and API 37 on the emulator have run; minSdk is
-16, D-010), Samsung One UI and other OEMs, Bluetooth keyboards, tablets.
+| 25.11.2026 | Honor MagicPad 2 (ROD2-W09), MagicOS 10.0.0.137 (C431E3R3P1); Gboard 18.6.3 with Íslenska `is-IS` (active), English `en-US`, Español `es-AR`; Ducky (`04d9:0295`), never connected before | 16 (API 36) | none (stock only) | **Bug reproduced.** Auto-selection gave "Gboard, Icelandic" (stock): `x`, key right of P, Shift + key, `y` typed U+0078 U+0111 U+0110 U+0079. |
+| 25.11.2026 | Same tablet and Ducky, still connected | 16 (API 36) | debug, v0.1.0 at `ffaccea` | **Pass (D-012 on a second device).** Right after install, with no manual step and the keyboard still plugged in, the summary changed to "Gboard, Icelandic (corrected Ð)" and the key typed U+00F0 U+00D0. Installed over adb with no on-device prompt. |
+| 25.11.2026 | Same tablet; Qulose Keyboard (Bluetooth LE), earlier manual choice of stock "Icelandic" under Gboard English (US) and Íslenska | 16 (API 36) | debug, v0.1.0 at `ffaccea` | **Pass after manual selection.** After install the summary stayed "Gboard, Icelandic" (the manual choice blocks auto-selection). With "Icelandic (corrected Ð)" picked by hand under English (US) and Íslenska: U+0078 U+00F0 U+00D0 U+0079. First Bluetooth keyboard tested. |
+
+Not yet tested: API 16–35 (only API 36 on the OnePlus and the Honor tablet and API 37 on the emulator
+have run; minSdk is 16, D-010), Samsung One UI and other OEMs.
 
 ## Findings (emulator, API 37, 24.11.2026)
 
@@ -26,8 +30,9 @@ Not yet tested: API 16–35 (only API 36 on the OnePlus and API 37 on the emulat
   providers: `com.android.inputdevices/.InputDeviceReceiver`, Gboard's
   `com.google.android.apps.inputmethod.libs.kcm.InputDeviceReceiver`, and ours. So the "stopped" state
   after install does not hide the receiver (verified on API 37 only).
-- **Gboard is itself a keyboard layout provider.** Whether it ships an Icelandic layout, and whether that
-  one is correct, is **unverified**. Worth checking: it may be an alternative workaround for Gboard users.
+- **Gboard is itself a keyboard layout provider.** Whether it ships an Icelandic layout was
+  **unverified** here. On the Honor tablet (Gboard 18.6.3, 25.11.2026) it does not add one: see the
+  Honor findings below.
 - **Layout picker (API 37):** Settings → Physical keyboard → device → language (e.g. "English (US)") →
   "Layouts" list. Both "Icelandic" and "Icelandic (corrected Ð)" are listed. The choice is per keyboard
   device and per IME language. The emulator has two keyboard devices ("AT Translated Set 2 keyboard" and
@@ -88,11 +93,16 @@ settings path per device and OEM, since it feeds the user instructions (D-001).
    android.hardware.input.action.QUERY_KEYBOARD_LAYOUTS` (layout providers).
 3. **Plug in the keyboard.** Check it in `dumpsys usb` (host devices) and `dumpsys input` (the
    `KeyboardType: 2` entry; `KeyboardLayoutInfo: <not set>` means it reports no language of its own).
-4. **Check for earlier manual choices.** Settings shows "User selected: …" for them. They override
+4. **Check for earlier manual choices.** Settings shows "User selected: …" for them (AOSP, OxygenOS;
+   MagicOS shows no prefix, so infer it: a keyboard that keeps the stock layout after our install was
+   set by hand). They override
    auto-selection and cannot be reset (see findings), so test auto-selection only with a keyboard the
    device has never seen.
 5. **Type test.** Open a text field (`am start -a com.android.settings.action.SETTINGS_SEARCH`; to
-   clear it, `am force-stop com.android.settings.intelligence` and start it again). The tester types
+   clear it, `am force-stop com.android.settings.intelligence` and start it again). MagicOS has no
+   such intent: use Honor search, `am start -n
+   com.hihonor.search/.presentation.ui.activity.AliasActivity` (force-stop `com.hihonor.search` to
+   clear it; the dumped text ends with the field's own "Search online"). The tester types
    `x`, the key right of P, Shift plus that key, `y` on the real keyboard. Read the code points from
    `uiautomator dump`, never the glyphs. Switch IMEs with `ime set <id>` and confirm the subtype with
    `dumpsys input_method` (`mCurrentSubtype=…@<hex hash>`).
@@ -127,10 +137,40 @@ settings path per device and OEM, since it feeds the user instructions (D-001).
 - **Neither keyboard reports a language** (`KeyboardLayoutInfo: <not set>` for the Preonic and the
   Ducky), so the IME step decides the automatic layout.
 - **Gboard is a layout provider here too** (`com.google.android.apps.inputmethod.libs.kcm.InputDeviceReceiver`).
-  Whether it ships an Icelandic layout is still **unverified**: the scan of the picker dropped
-  duplicate labels, so a second entry also labeled "Icelandic" would not have shown.
+  Whether it ships an Icelandic layout is **unverified on this phone**: the scan of the picker dropped
+  duplicate labels, so a second entry also labeled "Icelandic" would not have shown. Answered for
+  Gboard 18.6.3 on the Honor tablet (no second entry, see below).
 - **In-app result shows only the latest key press.** Fine for users; testers must read it after each
   keyboard.
 - **App bug:** the `ScrollView` root gets the system bar insets as padding with
   `clipToPadding="false"`, so scrolled text draws under the status bar and collides with the clock.
   The emulator check on 24.11.2026 only looked at the unscrolled screen. Fixed in D-013.
+
+## Findings (Honor MagicPad 2, MagicOS 10, API 36, 25.11.2026)
+
+- **Stock AOSP settings screens.** Unlike OxygenOS, MagicOS uses the AOSP Physical keyboard screens:
+  Physical keyboard → "<keyboard name>" with summary "Gboard, <layout>" → "Gboard layout" (one entry
+  per enabled subtype, "Keyboard layout: <name>") → "Keyboard layouts" list with radio buttons. The
+  summaries carry no "Automatic:" / "User selected:" prefix.
+- **Path by hand (reported by the user):** Settings → System & updates → "Looking for other
+  settings?" (at the bottom) → **Physical keyboard**. The link shows only while a physical keyboard is
+  connected; it was not found under Languages & input. The app's button opens the screen directly.
+- **"Enable PC mode" prompt.** Plugging in the USB keyboard asks whether to enable PC mode. Cancel
+  works; the test ran in normal mode. PC mode itself was not tested.
+- **OTG needs no toggle (verified).** The USB keyboard worked at once (`data_role=host`).
+- **Install re-runs auto-selection for a connected keyboard (verified).** The Ducky was plugged in
+  and auto-set to stock "Icelandic" before install. Installing the app changed the set of layouts,
+  which clears the auto-selection cache (`layout-selection.md`), and the summary switched to ours
+  without reconnecting the keyboard.
+- **A manual choice blocks D-012 (verified on real hardware).** The Qulose keyboard kept stock
+  "Icelandic" after install under both English (US) and Íslenska. English (US) → Icelandic cannot be
+  an automatic result, so these were the user's own earlier choices. Picking ours by hand fixed it.
+  Users who tried to fix the ð problem before must therefore select the layout by hand.
+- **Gboard 18.6.3 adds no second Icelandic layout (verified).** The picker under Íslenska lists 82
+  layouts. Scanned with slow scrolls where every pair of consecutive screens overlapped (so nothing
+  was skipped and duplicate labels would show at distinct positions): "Icelandic" appears once, next
+  to "Icelandic (corrected Ð)". Providers: AOSP, Gboard, ours; Honor ships none.
+- **The keyboards report no language** (`KeyboardLayoutInfo: <not set>` for the Ducky and the Qulose).
+- **The generic Settings intent opens Wi-Fi.** `am start -a android.settings.SETTINGS` landed on
+  `WifiSettingsActivity` (two-pane layout), and the wireless adb connection dropped shortly after
+  (cause **unverified**; `adb connect <ip>:<port>` restored it).

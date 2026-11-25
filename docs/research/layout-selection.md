@@ -207,6 +207,15 @@ reports no language of its own, showed "Automatic: Icelandic (corrected Ð)" und
 (Ísland) with no manual selection, and its key right of P typed U+00F0 / U+00D0. Under FUTO the same
 keyboard showed "Default" (see above). Details in `testing.md`.
 
+## Real device result (Honor MagicPad 2, MagicOS 10, API 36, 25.11.2026)
+
+D-012 holds on a second device. The same Ducky, new to the tablet, was auto-set to stock "Icelandic"
+under Gboard Íslenska (`is-IS`) before install. Installing the app, with the keyboard still connected,
+switched it to "Icelandic (corrected Ð)" with no user step. That matches the cache rule above: a new
+provider changes the set of layouts and rebuilds the cache. A Bluetooth keyboard with an earlier manual
+choice of stock "Icelandic" kept it after install, as `getKeyboardLayoutForInputDeviceInternal` predicts
+(the user selection wins), and needed a manual selection. Details in `testing.md`.
+
 ## Implications
 
 - **User instructions:** selecting the layout under each language stays in the setup steps as the
