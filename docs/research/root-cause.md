@@ -74,4 +74,6 @@ when testing by eye. **Always verify code points, not glyphs.**
 - `GRAVE`: label `\u02da` (ring above, spacing), base `\u030a` (combining ring above), shift `\u0308`
   (combining diaeresis).
 - `RIGHT_BRACKET` → `'` / `?`, `BACKSLASH` → `+` / `*`.
-- Not yet compared key-by-key against the Windows/macOS Icelandic layouts. That is an optional follow-up.
+- Compared key-by-key against Windows (Microsoft's KBDIC) and xkeyboard-config on 25.11.2026: no second
+  Ð/ð-style error, three AltGr differences left as they are. See `kcm-audit.md`. Not compared: ÍST 125
+  (the standard) and Apple's macOS layout.

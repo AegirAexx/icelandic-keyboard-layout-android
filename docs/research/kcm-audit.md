@@ -21,27 +21,30 @@ on Windows and Linux layouts only: the standard itself (ÍST 125) and macOS were
 | macOS Icelandic | the third common layout | **Not compared.** No primary source. The `mac` variant above is a 2013-era approximation by xkeyboard-config, not Apple's file. |
 | ReactOS `kbdic.c` | (first draft only) | **Dropped as a basis.** Its scan code table is US-style, so it puts `ð` and `ö` on the wrong physical keys. Matching by character, as the first draft did, could not catch a position error. Don't use it for positions. |
 
-### How AOSP key names tie to scan codes (verified 25.11.2026)
+### How AOSP key names tie to scan codes (verified 25.11.2026, except where noted)
 
-- **Linux event codes** (`include/uapi/linux/input-event-codes.h`, torvalds/linux, read via `gh api`):
-  `KEY_MINUS` 12, `KEY_EQUAL` 13, `KEY_LEFTBRACE` 26, `KEY_RIGHTBRACE` 27, `KEY_SEMICOLON` 39,
+- **Linux event codes** (https://github.com/torvalds/linux/blob/master/include/uapi/linux/input-event-codes.h,
+  `master` read 25.11.2026): `KEY_MINUS` 12, `KEY_EQUAL` 13, `KEY_LEFTBRACE` 26, `KEY_RIGHTBRACE` 27, `KEY_SEMICOLON` 39,
   `KEY_APOSTROPHE` 40, `KEY_GRAVE` 41, `KEY_BACKSLASH` 43, `KEY_COMMA` 51, `KEY_DOT` 52,
   `KEY_SLASH` 53, `KEY_102ND` 86. These are the numbers in the SC column above, read as decimal
-  (0C = 12, 1A = 26, 27 = 39, 28 = 40, 29 = 41, 2B = 43, 35 = 53, 56 = 86). That the Windows set 1
-  scan codes shown by kbdlayout.info use the same numbers for these keys is shown by the table itself:
-  the characters sit on the same physical keys in both.
+  (0C = 12, 1A = 26, 27 = 39, 28 = 40, 29 = 41, 2B = 43, 35 = 53, 56 = 86). The equality of Linux
+  event codes and Windows set 1 scan codes for these keys is the long-standing PC/AT convention
+  (Linux event codes below 0x59 reproduce the set 1 codes). **Not re-verified here**, and not
+  independent of the table: the SC column was matched to AOSP names through these numbers.
 - **`Generic.kl`** (`platform/frameworks/base`, `data/keyboards/Generic.kl` at commit `1cdfff55…`)
   maps: 12 to `MINUS`, 13 to `EQUALS`, 26 `LEFT_BRACKET`, 27 `RIGHT_BRACKET`, 39 `SEMICOLON`,
   40 `APOSTROPHE`, 41 `GRAVE`, 43 `BACKSLASH`, 53 `SLASH`, and **86 to `BACKSLASH`** (the same key
   name as 43).
 - **The KCM's `map key` lines override that for this layout.** `KeyCharacterMap::mapKey` consults the
   layout's own scan code table (`mKeysByScanCode`) and returns on a hit, and an overlay's table is merged
-  into the base's (`frameworks/native`, `libs/input/KeyCharacterMap.cpp`, `refs/heads/main` at commit
-  `4f463a6b1de9198963dc6aff74154a504ba3f8f6`). So `map key 12 EQUALS` and `map key 13 MINUS` swap the
+  into the base's (`platform/frameworks/native`, `libs/input/KeyCharacterMap.cpp` and
+  `services/inputflinger/reader/EventHub.cpp` at commit `4f463a6b1de9198963dc6aff74154a504ba3f8f6`,
+  `main`, read 25.11.2026; for example
+  https://android.googlesource.com/platform/frameworks/native/+/4f463a6b1de9198963dc6aff74154a504ba3f8f6/libs/input/KeyCharacterMap.cpp).
+  `EventHub::mapKey` asks the device's KCM first and only on a miss falls back to the `.kl`. So `map key 12 EQUALS` and `map key 13 MINUS` swap the
   two keys relative to `Generic.kl`, putting `ö` on scan code 12 and `-` on 13, as on Windows. `map key 86
   PLUS` turns the extra ISO key into its own key (`PLUS`) instead of a second `BACKSLASH`, which is why
-  `<` has its own entry. The code that calls `mapKey` (which falls back to the `.kl` on a miss) was not
-  read.
+  `<` has its own entry.
 
 ## Comparison
 

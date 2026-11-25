@@ -1,7 +1,7 @@
 # Upstream: reporting and fixing in AOSP
 
-**Status:** prior-art check done (25.11.2026); five Issue Tracker results still to be opened. No bug
-filed, no patch yet.
+**Status:** prior-art check almost done (25.11.2026); five Issue Tracker results still to be opened
+(R-1). No bug filed, no patch yet.
 
 ## 1. Check for existing reports
 
@@ -14,7 +14,7 @@ filed, no patch yet.
 
 ### Issue Tracker (searched by the user, 25.11.2026; seven screenshots)
 
-- **No result title describes this bug** (physical keyboard, Icelandic layout, `đ` instead of `ð`).
+- **No result title clearly describes this bug** (physical keyboard, Icelandic layout, `đ` instead of `ð`).
   Searches and result counts: `Đ` 49, `U+0111` "many", `U+00F0` 34, `eth keyboard` 16,
   `keyboard_layout_icelandic` 0, `icelandic layout` 21, `icelandic keyboard` 19. Status filters were
   not recorded. Matching is fuzzy: `U+0111` returned mostly unrelated issues, so an empty or irrelevant

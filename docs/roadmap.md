@@ -24,8 +24,8 @@ the first release (R-5). R-8 waits only on ÍST 125.
 - File the bug on the Issue Tracker, then submit the four-line KCM patch to AOSP Gerrit
   (`research/upstream.md`).
 - Depends on R-1's five Issue Tracker results to read. If ÍST 125 (R-8) turns up more corrections, one
-  patch should carry them all, but don't hold the bug report for it. Gerrit needs the user's personal Google account and an individual contributor
-  agreement.
+  patch should carry them all, but don't hold the bug report for it.
+- Gerrit needs the user's personal Google account and an individual contributor agreement.
 - Before relying on a quick merge, find out how the public AOSP `main` is updated and how external
   changes reach it. Its latest commit was dated 26.03.2025 when read (`research/upstream.md` §1).
 - Start early: the upstream review takes a long time.
@@ -59,7 +59,8 @@ with it (procedure: `research/testing.md`):
   key means existing installs can't be updated.
 - Signed build, GitHub Release with the APK, CHANGELOG entry.
 - After R-3, so the first release makes no untested claims. R-8 is done apart from ÍST 125; the
-  release only needs the user's decision on that, not its outcome. Decide the distribution channel
+  release only needs the user's decision on that, not its outcome. If ÍST 125 later disagrees with
+  AOSP, correcting the layout is a behavior change shipped as an update. Decide the distribution channel
   first: GitHub, F-Droid and Google Play sign differently, so a user can't switch channel without
   uninstalling. Installs of the debug build must be
   uninstalled first (different signature), which resets manual layout choices.
