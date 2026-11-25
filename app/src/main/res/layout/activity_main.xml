@@ -1,68 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<!--
+    Two tabs: "Set up" (intro, steps, settings button) and "Test" (key test). The tab bar is two plain
+    views rather than TabHost (deprecated) or Material's TabLayout (needs AndroidX, D-011). The root
+    does not scroll and takes the system bar insets as padding, so scrolled text never draws under
+    the bars. Each page scrolls on its own.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipToPadding="false">
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="24dp"
+        android:paddingTop="24dp"
+        android:paddingRight="24dp"
+        android:text="@string/app_name" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="24dp">
+        android:layout_marginTop="16dp"
+        android:baselineAligned="false"
+        android:orientation="horizontal"
+        android:paddingLeft="12dp"
+        android:paddingRight="12dp">
 
-        <TextView
-            style="@style/Title"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/tab_setup"
+            style="@style/Tab"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/app_name" />
+            android:layout_weight="1">
 
-        <TextView
-            style="@style/Body"
-            android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/tab_setup_label"
+                style="@style/TabLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/setup_heading" />
+
+            <View
+                android:id="@+id/tab_setup_indicator"
+                style="@style/TabIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="3dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/tab_test"
+            style="@style/Tab"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/intro" />
+            android:layout_weight="1">
 
-        <TextView
-            style="@style/Heading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/setup_heading" />
+            <TextView
+                android:id="@+id/tab_test_label"
+                style="@style/TabLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/test_heading" />
 
-        <TextView
-            android:id="@+id/steps"
-            style="@style/Body"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/open_settings"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/open_settings" />
-
-        <TextView
-            style="@style/Body"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/setup_note"
-            android:textAppearance="?android:attr/textAppearanceSmall" />
-
-        <TextView
-            style="@style/Heading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/test_heading" />
-
-        <TextView
-            android:id="@+id/status"
-            style="@style/Body"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:accessibilityLiveRegion="polite"
-            tools:targetApi="19"
-            android:textAppearance="?android:attr/textAppearanceMedium" />
+            <View
+                android:id="@+id/tab_test_indicator"
+                style="@style/TabIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="3dp" />
+        </LinearLayout>
     </LinearLayout>
-</ScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <ScrollView
+            android:id="@+id/page_setup"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <TextView
+                    style="@style/Body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:text="@string/intro" />
+
+                <TextView
+                    android:id="@+id/steps"
+                    style="@style/Body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp" />
+
+                <Button
+                    android:id="@+id/open_settings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/open_settings" />
+
+                <TextView
+                    style="@style/Body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/setup_note"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
+            </LinearLayout>
+        </ScrollView>
+
+        <ScrollView
+            android:id="@+id/page_test"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="24dp">
+
+                <TextView
+                    style="@style/Body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="0dp"
+                    android:text="@string/test_hint" />
+
+                <TextView
+                    android:id="@+id/status"
+                    style="@style/Body"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:accessibilityLiveRegion="polite"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    tools:targetApi="19" />
+            </LinearLayout>
+        </ScrollView>
+    </FrameLayout>
+</LinearLayout>

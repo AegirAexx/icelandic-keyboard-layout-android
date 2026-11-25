@@ -22,7 +22,9 @@ Sources:
 2. **With an Icelandic IME subtype, automatic selection picks the stock (broken) layout over ours**
    (verified, source and emulator). Users must select ours by hand under every language they use.
 3. **Adding `is-IS` to our `keyboardLocale` makes ours win** for Gboard's `is-IS` subtype (verified on
-   the emulator, clean install, with a control). Applied in D-012 as `is-IS,is-Latn`.
+   the emulator, clean install, with a control; confirmed on a OnePlus 12, API 36, with a keyboard new to
+   the phone). Applied in D-012 as `is-IS,is-Latn`. It does not help IMEs whose subtype has no language
+   tag, such as FUTO (verified on the same phone).
 4. **Gboard switches its subtype to match the focused app's locale** (verified on the emulator). This
    explains the earlier per-app locale finding in `testing.md`.
 5. **The auto-selection cache survives an app update** (verified, source and emulator). It is cleared
@@ -135,8 +137,10 @@ For a subtype tagged only `is` (no country), `is-IS` alone would score 2 against
 would win even in the system languages where ours used to win the tie: a regression. Keeping `is-Latn`
 next to it avoids that: the scorer keeps a layout's best score across its locales, so ours scores 3 via
 `is-Latn` and the tie is broken by label as before. `is-IS,is-Latn` is therefore never worse than
-`is-Latn` alone. Which tags other IMEs (Samsung Keyboard, SwiftKey, FUTO)
-use is **unverified**.
+`is-Latn` alone. Which tags Samsung Keyboard and SwiftKey use is **unverified**. FUTO Keyboard (Play
+Store build) uses none: it exposes a single subtype with an empty locale and no language tag, so
+auto-selection has nothing to match and gives the generic layout (verified on a OnePlus 12, API 36,
+24.11.2026; see `testing.md`). FUTO users must select our layout by hand.
 
 The hardware step runs before the IME step: a keyboard that reports its own language tag
 (`InputDevice.getKeyboardLanguageTag()`, from the HID country code or the IDC file) is matched on
@@ -195,6 +199,13 @@ An in-place update (`adb install -r`, or a store update) keeps our descriptor, s
 A clean install, an uninstall of any provider, or a reboot rebuilds it (the reboot case is
 **unverified**, but the cache is in memory only). Uninstalling also removes stored user selections of
 our layout (`removeUninstalledKeyboardLayouts`).
+
+## Real device result (OnePlus 12, OxygenOS 16, API 36, 24.11.2026)
+
+D-012 holds on real hardware. A Ducky USB keyboard that had never been connected to the phone, and that
+reports no language of its own, showed "Automatic: Icelandic (corrected Ð)" under Gboard Íslenska
+(Ísland) with no manual selection, and its key right of P typed U+00F0 / U+00D0. Under FUTO the same
+keyboard showed "Default" (see above). Details in `testing.md`.
 
 ## Implications
 
