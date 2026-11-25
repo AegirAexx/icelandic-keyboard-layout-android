@@ -1,7 +1,7 @@
 # Icelandic Keyboard Layout Fix for Android
 
-> **Status:** works on the devices tested so far (Android 16 and 17). Not released yet. See
-> [Status](#status).
+> **Status:** works on everything tested so far: two real devices (Android 16) and emulators from
+> Android 4.1 to 17. Not released yet. See [Status](#status).
 
 A tiny Android app that fixes the built-in **Icelandic physical keyboard layout**. On stock Android, the
 key right of `P` on a USB or Bluetooth keyboard types the Croatian/Vietnamese **Đ/đ** (U+0110/U+0111)
@@ -35,8 +35,8 @@ Every other key works exactly as in Android's own Icelandic layout.
 
 On Android 14 and later, with Gboard and Icelandic among its languages, Android usually picks the
 corrected layout by itself, unless you already picked a layout for that keyboard by hand (tested on
-Android 16 and 17). Otherwise you select it once in the physical keyboard settings. The app walks you
-through it and has a test that shows whether the fix is active.
+Android 15, 16 and 17; Android 14 is not verified). Otherwise you select it once in the physical
+keyboard settings. The app walks you through it and has a test that shows whether the fix is active.
 
 ## Status
 
@@ -47,10 +47,13 @@ Tested with the debug build:
 | OnePlus 12, OxygenOS 16 | 16 | USB | Works. Picked automatically under Gboard Icelandic; selected by hand under FUTO. |
 | Honor MagicPad 2, MagicOS 10 | 16 | USB, Bluetooth | Works. Picked automatically for a new USB keyboard; selected by hand for a Bluetooth keyboard that had been set up before. |
 | Emulator | 17 | built-in | Works. Picked automatically under Gboard Icelandic. |
+| Emulator | 15 | built-in | Works. Picked automatically under Gboard Icelandic. |
+| Emulator | 14 | built-in | Works when selected by hand. Automatic selection could not be tested (the emulator's Gboard has no Icelandic language entry for Android to match). |
+| Emulators | 13, 10, 5.1, 4.4, 4.1 | built-in | Works when selected by hand (see [Android 13 and older](#android-13-and-older)). Android has no automatic choice there. |
 
-Not tested yet: Android 15 and older (the app supports Android 4.1 and later), Samsung and other
-manufacturers, automatic selection with a Bluetooth keyboard, and MagicOS PC mode. Device reports
-are very welcome, see [Contributing](#contributing).
+Not tested yet: automatic selection on Android 14, Samsung and other manufacturers, automatic
+selection with a Bluetooth keyboard, and MagicOS PC mode. Device reports are very welcome, see
+[Contributing](#contributing).
 
 Not done yet: a signed release, F-Droid and Google Play, and reporting the bug to Android itself.
 Details per device are in [docs/research/testing.md](docs/research/testing.md).
@@ -101,6 +104,19 @@ Verified on an Honor MagicPad 2, Android 16, with USB and Bluetooth keyboards.
    The next screen lists one entry per language of your on-screen keyboard.
 4. Open each language you use and select **Icelandic (corrected Ð)**.
 
+### Android 13 and older
+
+Verified on emulators (Android 13, 10, 5.1, 4.4 and 4.1) with the stock Android settings. Phones from
+other manufacturers may word the menus differently.
+
+1. Connect the keyboard.
+2. In the app, tap **Open keyboard settings**. On Android 10 and 13 it opens the "Physical keyboard"
+   screen. On Android 5.1 and older it opens "Language & input", where "Physical keyboard" is a section
+   further down.
+3. Tap your keyboard, then **Set up keyboard layouts**.
+4. Switch on **Icelandic (corrected Ð)** and switch **off** the built-in **Icelandic**. If both are on,
+   Android keeps using the built-in one and the key still types `đ`.
+
 Other manufacturers and Android versions will be added as they are tested.
 
 ## Known limitations
@@ -108,9 +124,13 @@ Other manufacturers and Android versions will be added as they are tested.
 - **A layout you picked earlier stays.** If you chose the built-in "Icelandic" before, for example to
   try to fix the ð, Android keeps that choice. Select **Icelandic (corrected Ð)** by hand.
 - **Automatic selection needs Android 14+ and an Icelandic language in the on-screen keyboard.**
-  Verified with Gboard on Android 16 and 17. Keyboards that switch languages internally, such as
-  FUTO, show up by name instead of a language, and the layout must be selected by hand. Samsung
-  Keyboard and SwiftKey are untested.
+  Verified with Gboard on Android 15, 16 and 17. Not verified on Android 14: the Gboard that the
+  emulator ships does not expose Icelandic as a language to Android. Keyboards that switch languages
+  internally, such as FUTO, show up by name instead of a language, and the layout must be selected by
+  hand. Samsung Keyboard and SwiftKey are untested.
+- **On Android 13 and older the built-in "Icelandic" must be switched off.** Android has no automatic
+  choice there. With both layouts on, the built-in one stays active (see
+  [Android 13 and older](#android-13-and-older)).
 - **Keyboards that report their own language** may get a different layout automatically. None of the
   real keyboards tested did.
 - **No "back to automatic" option** on the OnePlus tested (OxygenOS 16). Once a layout is picked by

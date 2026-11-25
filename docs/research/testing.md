@@ -19,9 +19,24 @@ How the layout was verified, and how to repeat it. Results are listed per device
 | 25.11.2026 | Same tablet and Ducky, still connected | 16 (API 36) | debug, v0.1.0 at `ffaccea` | **Pass (D-012 on a second device).** Right after install, with no manual step and the keyboard still plugged in, the summary changed to "Gboard, Icelandic (corrected Ð)" and the key typed U+00F0 U+00D0. Installed over adb with no on-device prompt. |
 | 25.11.2026 | Same tablet; Qulose Keyboard (Bluetooth LE), stock "Icelandic" under Gboard English (US) and Íslenska, by the user's account an earlier manual choice | 16 (API 36) | debug, v0.1.0 at `ffaccea` | **Pass after manual selection.** After install the summary stayed "Gboard, Icelandic", consistent with a manual choice blocking auto-selection. With "Icelandic (corrected Ð)" picked by hand under English (US) and Íslenska: U+0078 U+00F0 U+00D0 U+0079. First Bluetooth keyboard tested (manual selection only). |
 
-Not yet tested: API 16–35 (only API 36 on the OnePlus and the Honor tablet and API 37 on the emulator
-have run; minSdk is 16, D-010), auto-selection with a Bluetooth keyboard, MagicOS PC mode, Samsung One
-UI and other OEMs.
+Emulator runs for R-3 (25.11.2026). All use the debug build from `main` at `dd17aec`, the emulator's
+built-in keyboard device `qwerty2` (hardware keyboard, typed with `adb emu event text`), headless, one at
+a time, from a fresh AVD each (`google_apis_playstore` x86_64 images, `google_apis` for API 22, and
+`google_apis` x86 for API 19 and 16). Details and findings: "Findings (emulators, API 16–35)" below.
+
+| Date | Android | Image / Gboard | Result |
+|---|---|---|---|
+| 25.11.2026 | 15 (API 35) | `AE3A.240806.036`, Gboard 14.2 preload | **Pass, including auto-selection (D-012).** Icelandic added in Gboard's languages gives an `is-IS` subtype. Before install: "Automatic: Icelandic", `x[{y` types U+0111 U+0110. After `adb install`, no manual choice, app never launched: Íslenska (Ísland) shows "Automatic: Icelandic (corrected Ð)" and the keys type U+00F0 U+00D0; English (US) stays "Automatic: English (US)". App: both tabs, "Correct" on the Test tab, settings button opens `Settings$PhysicalKeyboardActivity`, edge-to-edge in portrait and landscape, dark, app locale is-IS ("Uppsetning" / "Prófun"). |
+| 25.11.2026 | 14 (API 34) | `UE1A.230829.036.A4`, Gboard 12.4 preload | **Pass by manual selection; auto-selection not testable on this image.** Stock "Icelandic": U+0111 U+0110. "Icelandic (corrected Ð)" picked under "Multilingual typing": U+00F0 U+00D0. This Gboard registers no IME subtype for Icelandic (see findings), so there is no `is-IS` subtype to test D-012 against. Receiver listed right after install. App UI pass not run. |
+| 25.11.2026 | 13 (API 33) | `TE1A.240213.009`, Gboard 12.4 preload | **Pass (manual).** Stock U+0111 U+0110; stock and ours both enabled: still stock; ours only: U+00F0 U+00D0. App pass (tabs, Test tab, settings button, app locale is-IS) OK; Set up tab screenshot read. Dark mode toggled, screenshot not read. |
+| 25.11.2026 | 10 (API 29) | `QSR1.211112.011`, Gboard 8.0 preload | **Pass (manual).** Same as API 33. Pre-API 30 insets path: opaque status bar, nothing under it. Dark mode not exercised. |
+| 25.11.2026 | 5.1.1 (API 22) | `LMY48X` (`google_apis` x86_64) | **Pass (manual).** Test tab: stock đ/Đ, both enabled still đ/Đ, ours only ð/Ð. `ACTION_HARD_KEYBOARD_SETTINGS` does not resolve; the button falls back to "Language & input" without a crash. Pre-API 23 `colorAccent` branch renders. |
+| 25.11.2026 | 4.4.2 (API 19) | `KK 6761301` (`google_apis` x86) | **Pass (manual).** Same as API 22. Launches with no errors; pre-API 21 plain text color, black tab indicator. |
+| 25.11.2026 | 4.1.2 (API 16) | `eng.wdu.20191213.040452` (`google_apis` x86) | **Pass (manual).** Same as API 22. `minSdk 16` holds. |
+
+Not yet tested: auto-selection on Android 14 (API 34; the emulator's Gboard has no Icelandic subtype),
+auto-selection with a Bluetooth keyboard, MagicOS PC mode, Samsung One UI and other OEMs. API 16–33
+were tested on emulators by manual selection only; per-IME-subtype layouts exist from API 34.
 
 ## Findings (emulator, API 37, 24.11.2026)
 
@@ -179,3 +194,54 @@ settings path per device and OEM, since it feeds the user instructions (D-001).
 - **The generic Settings intent opens Wi-Fi.** `am start -a android.settings.SETTINGS` landed on
   `WifiSettingsActivity` (two-pane layout), and the wireless adb connection dropped shortly after
   (cause **unverified**; `adb connect <ip>:<port>` restored it).
+
+## Findings (emulators, API 16–35, 25.11.2026)
+
+All **verified** on the emulators listed in the results table unless marked otherwise.
+
+- **The receiver is registered right after `adb install`, with the app never launched, on every API
+  from 16 to 35** (`cmd package query-receivers` on API 24+, `dumpsys package` on older images).
+- **Gboard's Icelandic support differs by image.** The preload on API 35 (14.2) creates an `is-IS` IME
+  subtype when Icelandic is added under Languages → ADD KEYBOARD, so Settings gets one entry per
+  subtype and D-012 works as on the real devices. The preload on API 34 (12.4) does not: after adding
+  Icelandic, `ime list -a -s` shows no subtypes, `enabled_input_methods` carries no subtype hash, and
+  Settings shows a single "Multilingual typing" entry with the summary "Default", also after installing
+  the app. So D-012 could not be tested on Android 14. Whether a current Gboard on Android 14 behaves
+  like API 35's is **unverified**. Switching the active subtype without the UI:
+  `settings put secure selected_input_method_subtype <hash>` (the hash is in `enabled_input_methods`).
+- **Before Android 14 (API 16–33) layouts are enabled, not chosen per language.** Path: Physical
+  keyboard → the keyboard (`qwerty2`) → a dialog "Choose keyboard layout" listing the enabled layouts
+  ("Default" at first) → **"Set up keyboard layouts"** → a checklist of all layouts. Ours appears as
+  "Icelandic (corrected Ð)" with "Icelandic Keyboard Layout" (the app name) underneath; the built-in one
+  as "Icelandic" / "Android keyboard". The dialog says "To switch, press Control-Spacebar".
+- **Pre-14, enabling ours next to the built-in "Icelandic" does not fix the key.** With both enabled the
+  built-in one stayed active (đ/Đ). Only with the built-in one switched off did the key type ð/Ð.
+  Whether Control-Spacebar switches between them was **not tested** (`adb` can't send it easily). The
+  app's setup text (step 4 "choose a language", step 5 "Select ...") does not describe this; see R-4.
+- **`ACTION_HARD_KEYBOARD_SETTINGS` does not resolve on API 22, 19 and 16** (expected below API 24). The
+  settings button falls back to `ACTION_INPUT_METHOD_SETTINGS`: "Language & input" with a "Physical
+  keyboard" section that lists the keyboard, which fits the setup note. No crash.
+- **UI branches** (screenshots read): API 29 and older draw the opaque system status bar and start
+  the content below it, nothing under it when scrolled; the tab indicator is the theme accent on API
+  22–33 and black on API 19 and 16 (no `colorAccent` below API 21, as D-013 describes); API 22 and
+  older show the button text in capitals (platform style). Edge-to-edge and light/dark status icons
+  were checked on API 35 only. Dark mode was looked at on API 35 only (on API 33 it was toggled but the
+  screenshot was not read; on API 29 `cmd uimode night yes` had no effect; not tried below).
+- **Oracles.** API 29 and newer: the typed text read from `uiautomator dump` (Settings search field)
+  and the app's Test tab agree. API 22 and older: only the Test tab (no search-field intent; the stock
+  Settings has none).
+
+### Emulator procedure notes (for repeating the runs)
+
+- `sdkmanager` and `avdmanager` are `.bat` files: quote package ids that contain `;` (`"system-images;
+  android-34;google_apis_playstore;x86_64"`), or `cmd.exe` splits them. Set `JAVA_HOME` and
+  `ANDROID_HOME` in the same command.
+- Boot headless: `emulator -avd <name> -no-window -no-snapshot -no-audio -gpu swiftshader_indirect`.
+  Check the AVD has `hw.keyboard=yes`. Shut down with `adb emu kill`, then confirm no `emulator` or
+  `qemu-system*` process is left.
+- On older images, write scratch files under `/data/local/tmp` (`/sdcard` is not writable on API 22),
+  and call `input swipe` with four arguments (it takes no duration argument on API 16: the extra
+  argument fails silently and the list does not scroll). `monkey` prints about 1 MB; start the app with
+  `am start -n io.github.aegiraexx.icelandickeyboard/.MainActivity` instead.
+- Each new manual layout choice on API 34+ is permanent for that keyboard and subtype, so use a fresh
+  AVD for any automatic-selection test. Before API 34 the choice is a toggle and can be undone.
