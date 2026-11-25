@@ -161,7 +161,7 @@ https://source.android.com/docs/whatsnew/site-updates. The inferences are marked
 - **Consequence for this project (inference):** an accepted fix is cherry-picked into Google's internal
   tree and reaches the public repository only with a later source drop (Q2 or Q4), and reaches devices
   only through OEM updates. The Gerrit change may never show as an ordinary merge, and there is no
-  notice of acceptance, so "not yet merged" (D-015, R-8) isn't observable: read it as "not yet
+  notice of acceptance, so "not yet merged" (D-015) isn't observable: read it as "not yet
   accepted". Expect a long timeline and no quick public confirmation. The sideloadable app (D-001)
   remains the only fix users can get soon.
 - **Bugs:** https://source.android.com/docs/setup/contribute/report-bugs says to search open and closed

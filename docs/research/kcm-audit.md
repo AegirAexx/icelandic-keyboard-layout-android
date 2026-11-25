@@ -1,4 +1,4 @@
-# KCM audit (R-8)
+# KCM audit (former R-8)
 
 Key-by-key comparison of the Icelandic layout in `app/src/main/res/raw/keyboard_layout_icelandic.kcm`
 (AOSP's file plus the Ð/ð fix, `kcm-diff.md`) against other Icelandic layouts. Done 25.11.2026 by
@@ -8,7 +8,8 @@ reading, not by typing on a device. On-device tests (`testing.md`) typed `x`, th
 **Result:** no second error of the Ð/ð kind. Against Microsoft's Windows layout, every key matches by
 position in its plain, Shift and Caps Lock states. Three AltGr differences exist (D1 to D3), none is
 clearly an error, and nothing was changed. The upstream patch stays limited to the Ð/ð fix. This rests
-on Windows and Linux layouts only: the standard itself (ÍST 125) and macOS were not read.
+on Windows and Linux layouts only: the standard itself (ÍST 125) and macOS were not read, and
+chasing them is out of scope (D-016).
 
 ## Sources and their limits
 
@@ -17,7 +18,7 @@ on Windows and Linux layouts only: the standard itself (ÍST 125) and macOS were
 | AOSP `main`, commit `1cdfff555f4a21f71ccc978290e2e212e2f8b168` (`android.googlesource.com`, read 25.11.2026) | the layout under audit | **Verified.** A second reader diffed the whole file against ours: only the header comment and the four `LEFT_BRACKET` lines differ. |
 | **Windows KBDIC.DLL**, as shown by https://kbdlayout.info/kbdic/ (versions 10.0.17134.1 to 10.0.25393.1, read 25.11.2026; pages `virtualkeys` and `shiftstates`) | **Windows** reference: scan code to virtual key, characters per shift state, which keys are dead | **Verified as read.** It is Microsoft's own layout, shown by a third-party site that extracts it. Pages list scan codes, so key positions are real. |
 | xkeyboard-config `symbols/is`, variants `basic` and `mac` (NetBSD mirror `ftp.riken.jp`, read 25.11.2026) | **Linux** and Apple-keyboard approximation | **Verified as read.** The mirror's version and date were not recorded and may be older than current. `basic` only overrides keys; the rest comes from `latin(type4)`, which I did not read. It adds Linux-only AltGr symbols (², ¼, ¤, „ and others). |
-| ÍST 125 (the Icelandic standard) | the authoritative layout | **Not read.** Listed in Staðlaráð's web shop (https://www.stadlar.is, linked from Wikipedia's article); price and terms not checked. |
+| ÍST 125 (the Icelandic standard) | the authoritative layout | **Not read, out of scope (D-016).** ÍST 125:2015 (in force since 01.04.2015; the 1995 edition is also sold) is listed in Staðlaráð Íslands' web shop for 10.032 kr. (https://www.stadlar.is, read 25.11.2026). Its scope covers the character arrangement on the 48 alphanumeric keys (ISO/IEC 9995-1 and -2); whether it covers AltGr was not seen. Terms on quoting it were not checked. |
 | macOS Icelandic | the third common layout | **Not compared.** No primary source. The `mac` variant above is a 2013-era approximation by xkeyboard-config, not Apple's file. |
 | ReactOS `kbdic.c` | (first draft only) | **Dropped as a basis.** Its scan code table is US-style, so it puts `ð` and `ö` on the wrong physical keys. Matching by character, as the first draft did, could not catch a position error. Don't use it for positions. |
 
@@ -77,7 +78,7 @@ dead key there.
 
 - **D1 · AltGr on the key under Esc.** Windows types a plain `°` (U+00B0). xkeyboard-config `basic`
   types `¬` (U+00AC), its `mac` variant has `°` on the base level. AOSP has nothing. The Linux layout
-  disagrees with Windows, so the intended character is unknown without ÍST 125. Left as is.
+  disagrees with Windows, so the intended character is unknown without ÍST 125 (out of scope, D-016). Left as is.
 - **D2 · AltGr on `´` types a plain `^`** in AOSP. Windows has a **dead** circumflex there (verified).
   xkeyboard-config `basic` also makes it dead circumflex, while its `mac` variant types a plain `^`,
   as AOSP does. Left as is.
@@ -99,9 +100,8 @@ decision. CLAUDE.md: the only change from AOSP is the intended fix.
 - AltGr `{ [ ] }`, `@`, `€`, `µ` and `\` against xkeyboard-config: they come from `latin(type4)` and the
   `mac` variant, only partly read. They were checked against Windows only.
 
-## If someone gets ÍST 125
+## Out of scope (D-016)
 
-Compare AltGr on GRAVE (D1), APOSTROPHE (D2) and BACKSLASH (D3) against it, and re-check the plain and
-Shift positions of the keys with Icelandic letters or symbols (`ð`, `þ`, `æ`, `ö`, `´`, `°`, `'`, `+`,
-`<`). If the standard disagrees with AOSP anywhere, add the correction to the same Gerrit patch (R-2)
-and to the app.
+The standard (ÍST 125:2015, 10.032 kr. at https://www.stadlar.is, listing read 25.11.2026) and Apple's
+macOS layout were deliberately not obtained or compared. If a user reports AOSP wrong on GRAVE (D1),
+APOSTROPHE (D2) or BACKSLASH (D3), reopen it as a separate, documented behavior change (D-016).

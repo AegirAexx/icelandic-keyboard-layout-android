@@ -191,3 +191,16 @@ Append-only. Format: ID, date, decision, why, consequences. Supersede rather tha
   project's rule is that the only change from AOSP is the intended fix (CLAUDE.md).
 - **Consequences:** revisit if ÍST 125 or a user report shows AOSP wrong on those keys. Then add the
   correction to the same Gerrit patch if it is not yet merged, and to the app as an update (R-8).
+
+## D-016 · 25.11.2026 · Drop the ÍST 125 and macOS comparison; the AltGr differences are out of scope
+
+- **Decision:** don't buy or read ÍST 125, and don't compare Apple's macOS layout. The three AltGr
+  differences from the audit (D1 to D3, `research/kcm-audit.md`) are not pursued. Supersedes the
+  "revisit if ÍST 125 ..." consequence of D-015 and closes R-8.
+- **Why:** the project fixes the Ð/ð bug. The audit found no second error of that kind and the Windows
+  and Linux references agree on the Ð/ð key (`research/kcm-audit.md`, comparison table). The AltGr
+  differences are small, and the two references disagree on D1 (Windows `°`, xkeyboard-config `¬`).
+  ÍST 125:2015 costs 10.032 kr. at Staðlaráð Íslands (https://www.stadlar.is, listing read 25.11.2026).
+  The user judged chasing AltGr choices out of scope.
+- **Consequences:** the Gerrit patch (R-2) and the app contain only the Ð/ð change. If a user reports
+  one of the three keys as wrong, reopen it as a separate, documented behavior change.
