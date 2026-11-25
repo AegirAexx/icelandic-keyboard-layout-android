@@ -4,17 +4,19 @@ Open tasks, tracked in git so they carry between machines (D-014). `HANDOFF.md` 
 session state; this file holds the shared task list. Mark a task done with the date and the PR or
 commit, then remove it once nothing refers to it.
 
-**Next up:** R-1 and R-3. They are research and testing that need no physical device, and they remove
-the main unknowns before the first release (R-5).
+**Next up:** R-1's two manual searches, then R-8 (KCM audit), R-2 (upstream, started early because Gerrit
+review is slow) and R-3 (emulators). R-8 and R-3 need no physical device, and R-3 removes the main
+unknown before the first release (R-5).
 
-## R-1 · Prior art and existing upstream reports
+## R-1 · Prior art and existing upstream reports (mostly done 25.11.2026)
 
-- Search for apps that already ship a corrected Icelandic physical layout, and check whether Gboard's
-  own layout provider has one on other versions (none in Gboard 18.6.3, `research/testing.md`).
-- Search Google's Issue Tracker and AOSP Gerrit for an existing report or fix of the Ð/Đ mapping.
-- Why first: publishing assumes no equivalent app exists (`CONTEXT.md`), and an existing bug report
-  changes R-2 from "file" to "add to".
-- Procedure and notes: `research/publishing.md` §0, `research/upstream.md` §1. Record findings there.
+- **Done:** no equivalent app found on F-Droid or in web search; no Gerrit change; AOSP `main` still has
+  the bug and Icelandic is the only outlier among the 50 AOSP KCMs. Findings in
+  `research/publishing.md` §0 and `research/upstream.md` §1.
+- **Left, needs the user (logged in):** search https://issuetracker.google.com by hand for an existing
+  report ("Icelandic", "eth", "U+00F0", "keyboard_layout_icelandic", "Đ"). If one exists, R-2 becomes
+  "add to it". Also search Google Play directly for an equivalent app.
+- Remove this entry once those two searches are logged.
 
 ## R-2 · Report the bug upstream and submit the patch
 
@@ -58,6 +60,15 @@ with it (procedure: `research/testing.md`):
 
 - Needs a borrowed Samsung device. One UI is the most common Android skin, and Samsung Keyboard's
   subtype tags are unknown (does it auto-select our layout?).
+
+## R-8 · Key-by-key audit of the Icelandic KCM
+
+- Compare every key of AOSP's `keyboard_layout_icelandic.kcm` with the Icelandic standard layout
+  (ÍST 125; Windows and macOS Icelandic layouts) before filing upstream and before v0.1.0. The project
+  claims the Ð/ð fix is the only behavioral change, and the upstream patch should be complete.
+- It was step 8 of the first HANDOFF and dropped off the list when the roadmap was made.
+- Record the result in `research/kcm-diff.md` or a new `research/kcm-audit.md`. Run it before R-2's
+  Gerrit patch, so one patch can carry every correction.
 
 ## R-7 · Lower priority
 

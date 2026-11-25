@@ -13,6 +13,23 @@ The plan is to publish only if no equivalent exists. Search:
 
 Record findings here with dates.
 
+### Findings (25.11.2026)
+
+- **No equivalent app found.** Web search found no F-Droid or Google Play app that ships a corrected
+  Icelandic physical-keyboard layout. The only Icelandic hit was "Icelandic for AnySoftKeyboard"
+  (`com.anysoftkeyboard.languagepack.icelandic`, Apache-2.0, 5.1.6158, 15.07.2025,
+  https://f-droid.org/packages/com.anysoftkeyboard.languagepack.icelandic/). It is an on-screen language
+  pack for another IME, not a physical layout, so it is not an equivalent.
+  Limits: web search is not an exhaustive store search. Google Play was not searched directly, and
+  ExKeyMo-generated APKs would not be listed under an Icelandic name.
+- **GitHub code search** (`QUERY_KEYBOARD_LAYOUTS`) found other layout-provider apps, none Icelandic:
+  `calin-darie/extra-keyboard-layouts`, `ris58h/custom-keyboard-layout` and `ris58h/exkeymo`,
+  `OctoNezd/OculusLayouts`, `anssih/finqwerty`, `tialaramex/BritishKeyboard`, `anisse/bepo-android`,
+  `Viatorus/neo2-external-keyboard`, `alisabzevari/PersianHardwareKeyboard`, among others. They confirm
+  the mechanism is established and give no reason to doubt D-001. Two of them,
+  `ris58h/exkeymo` and `OctoNezd/OculusLayouts`, contain the uncorrected Icelandic KCM.
+- Details of the upstream search: `upstream.md` §1.
+
 ## F-Droid (unverified)
 
 - Requires a FOSS license (Apache-2.0 is fine) and builds from source on F-Droid's build server.
