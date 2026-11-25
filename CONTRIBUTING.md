@@ -8,7 +8,11 @@ Open an issue with:
 
 - Device model, Android version, and manufacturer skin (e.g. One UI 7)
 - Physical keyboard (wired/Bluetooth, physical layout)
-- Whether the corrected layout appeared in settings and was selectable
+- On-screen keyboard and its languages (e.g. Gboard with Icelandic and English)
+- Whether the corrected layout appeared in settings and was selectable, and whether Android picked it
+  automatically or you selected it by hand (and whether a layout had been picked for that keyboard
+  before)
+- The settings path to the physical keyboard screen on your device
 - The **code points** typed, not just how they look. Ð and Đ look identical in uppercase.
 
 ## Reporting another wrong key

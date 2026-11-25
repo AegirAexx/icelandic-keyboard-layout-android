@@ -1,6 +1,7 @@
 # Icelandic Keyboard Layout Fix for Android
 
-> **Status:** early development. No release yet.
+> **Status:** works on the devices tested so far (Android 16 and 17). Not released yet. See
+> [Status](#status).
 
 A tiny Android app that fixes the built-in **Icelandic physical keyboard layout**. On stock Android, the
 key right of `P` on a USB or Bluetooth keyboard types the Croatian/Vietnamese **Đ/đ** (U+0110/U+0111)
@@ -18,34 +19,61 @@ using Android's Icelandic layout are.
 
 The layout file in the Android Open Source Project,
 [`keyboard_layout_icelandic.kcm`](https://android.googlesource.com/platform/frameworks/base/+/refs/heads/main/packages/InputDevices/res/raw/keyboard_layout_icelandic.kcm),
-maps that key to the wrong Unicode characters, and has done so since 2012. See
+maps that key to the wrong Unicode characters, probably since the file was added in 2012. See
 [docs/research/root-cause.md](docs/research/root-cause.md).
 
 ## How the fix works
 
-The app adds a corrected copy of the Icelandic layout through Android's standard mechanism for
-third-party keyboard layouts. It needs:
+The app adds a corrected copy of the Icelandic layout, **Icelandic (corrected Ð)**, through Android's
+standard mechanism for third-party keyboard layouts. It needs:
 
 - no root
 - no special permissions
 - no replacement of your on-screen keyboard
 
-After installing it, choose the corrected layout in your device's physical keyboard settings.
+Every other key works exactly as in Android's own Icelandic layout.
+
+On Android 14 and later, with Gboard and Icelandic among its languages, Android usually picks the
+corrected layout by itself, unless you already picked a layout for that keyboard by hand (tested on
+Android 16 and 17). Otherwise you select it once in the physical keyboard settings. The app walks you
+through it and has a test that shows whether the fix is active.
+
+## Status
+
+Tested with the debug build:
+
+| Device | Android | Keyboards | Result |
+|---|---|---|---|
+| OnePlus 12, OxygenOS 16 | 16 | USB | Works. Picked automatically under Gboard Icelandic; selected by hand under FUTO. |
+| Honor MagicPad 2, MagicOS 10 | 16 | USB, Bluetooth | Works. Picked automatically for a new USB keyboard; selected by hand for a Bluetooth keyboard that had been set up before. |
+| Emulator | 17 | built-in | Works. Picked automatically under Gboard Icelandic. |
+
+Not tested yet: Android 15 and older (the app supports Android 4.1 and later), Samsung and other
+manufacturers, automatic selection with a Bluetooth keyboard, and MagicOS PC mode. Device reports
+are very welcome, see [Contributing](#contributing).
+
+Not done yet: a signed release, F-Droid and Google Play, and reporting the bug to Android itself.
+Details per device are in [docs/research/testing.md](docs/research/testing.md).
 
 ## Installation
 
-_Coming soon._ Planned channels: GitHub Releases (APK), F-Droid, and possibly Google Play.
+There is no release yet. Planned channels: GitHub Releases (APK), then F-Droid and possibly Google
+Play if no equivalent app exists.
+Until then, you can [build it from source](#building-from-source).
 
 ## Usage
 
 Open the app. The **Set up** tab explains the setup and opens the physical keyboard settings. The
 **Test** tab checks the key right of `P` and shows whether it types `ð` (fixed) or `đ` (stock layout).
 
-If your on-screen keyboard is Gboard with Icelandic enabled, Android 14 and later usually pick the
-corrected layout automatically for a keyboard you have not set up before (verified on Android 16 and
-17). It does not replace a layout you already picked by hand, for example if you chose the built-in
-"Icelandic" earlier to try to fix the ð. Keyboards that report their own language may get a different
-one. Check with the **Test** tab, and if it is not right, select **Icelandic (corrected Ð)** by hand.
+First add Icelandic to the languages of your on-screen keyboard (for example in Gboard's settings).
+Without it, there is no Icelandic entry to select the layout under, and Android can't pick it
+automatically.
+
+On Android 14 and later, the layout is stored **per keyboard and per language** of your on-screen
+keyboard. If you use more than one language (for example Icelandic and English in Gboard), select the
+corrected layout under each one you type Icelandic in. Gboard can switch to Icelandic by itself in apps
+set to Icelandic, so select it under Icelandic even if you mostly type in English.
 
 ### OnePlus (OxygenOS 16)
 
@@ -75,9 +103,22 @@ Verified on an Honor MagicPad 2, Android 16, with USB and Bluetooth keyboards.
 
 Other manufacturers and Android versions will be added as they are tested.
 
+## Known limitations
+
+- **A layout you picked earlier stays.** If you chose the built-in "Icelandic" before, for example to
+  try to fix the ð, Android keeps that choice. Select **Icelandic (corrected Ð)** by hand.
+- **Automatic selection needs Android 14+ and an Icelandic language in the on-screen keyboard.**
+  Verified with Gboard on Android 16 and 17. Keyboards that switch languages internally, such as
+  FUTO, show up by name instead of a language, and the layout must be selected by hand. Samsung
+  Keyboard and SwiftKey are untested.
+- **Keyboards that report their own language** may get a different layout automatically. None of the
+  real keyboards tested did.
+- **No "back to automatic" option** on the OnePlus tested (OxygenOS 16). Once a layout is picked by
+  hand for a keyboard, it can only be changed to another layout.
+
 ## Building from source
 
-Requires the Android SDK (API 37) and JDK 17 or newer. Android Studio ships both.
+Requires the Android SDK (API 37) and JDK 17 or newer. Android Studio provides both.
 
 ```sh
 ./gradlew assembleDebug     # app/build/outputs/apk/debug/app-debug.apk
@@ -89,12 +130,14 @@ On Windows, use `gradlew.bat`. Point Gradle at the SDK with `ANDROID_HOME` or `s
 
 ## Upstream
 
-The real fix belongs in Android itself. Progress on reporting and patching it is tracked in
+The real fix belongs in Android itself: a four-line change in one file. Reporting it on Google's Issue
+Tracker and submitting the patch to AOSP has not started yet. The plan is in
 [docs/research/upstream.md](docs/research/upstream.md).
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md).
+Reports from real devices help most, especially from Samsung and other manufacturers and from older
+Android versions. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
